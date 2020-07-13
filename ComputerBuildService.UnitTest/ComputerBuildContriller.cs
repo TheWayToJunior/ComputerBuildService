@@ -9,19 +9,19 @@ namespace ComputerBuildService.UnitTest
 {
     public class ComputerBuildContriller
     {
-        [Fact]
-        public async Task Get_ReturnsOkResult()
-        {
-            var mock = new Mock<ILogger<ComputerBuildController>>();
-            ILogger<ComputerBuildController> logger = mock.Object;
+        //[Fact]
+        //public async Task Get_ReturnsOkResult()
+        //{
+        //    //var mock = new Mock<ILogger<ComputerBuildController>>();
+        //    //ILogger<ComputerBuildController> logger = mock.Object;
 
-            var controller = new ComputerBuildController(logger);
+        //    //var controller = new ComputerBuildController(logger);
 
-            // Act
-            ActionResult<int> okResult = await controller.Get();
+        //    //// Act
+        //    //ActionResult<int> okResult = await controller.Get();
 
-            // Assert
-            Assert.IsType<OkObjectResult>(okResult.Result);
-        }
+        //    //// Assert
+        //    //Assert.IsType<OkObjectResult>(okResult.Result);
+        //}
     }
 }

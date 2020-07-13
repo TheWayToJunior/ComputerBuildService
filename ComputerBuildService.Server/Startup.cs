@@ -1,4 +1,8 @@
+using AutoMapper;
 using ComputerBuildService.Server.Data;
+using ComputerBuildService.Server.IServices;
+using ComputerBuildService.Server.Profiles;
+using ComputerBuildService.Server.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +28,19 @@ namespace ComputerBuildService.Server
                 opt.UseSqlServer(configuration.GetConnectionString("ApplicationDbContext"));
             });
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+            // Auto Mapper Configurations
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new ApplicatinProfile());
+            });
+
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
+            services.AddScoped<IProcessorServise, ProcessorServise>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -3,8 +3,9 @@ using ComputerBuildService.Server.IServices;
 
 namespace ComputerBuildService.Server.Services
 {
-    public class ApplicationDbService<TEntity> : Repository<TEntity>, IApplicationDbService<TEntity>
-        where TEntity : class
+    public class ApplicationDbService<TEntity, TPrimaryKey> 
+        : Repository<TEntity, TPrimaryKey>, IApplicationDbService<TEntity, TPrimaryKey>
+        where TEntity : class, IEntity<TPrimaryKey>
     {
         public ApplicationDbService(ApplicationDbContext context)
             : base(context)

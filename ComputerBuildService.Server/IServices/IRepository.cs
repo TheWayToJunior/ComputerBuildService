@@ -1,12 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 
 namespace ComputerBuildService.Server.IServices
 {
-    public interface IRepository<TEntity>
+    public interface IRepository<TEntity, TPrimaryKey>
         where TEntity : class
     {
         IQueryable<TEntity> GetAll();
@@ -22,5 +20,7 @@ namespace ComputerBuildService.Server.IServices
         void Remove(TEntity entity);
 
         void RemoveRange(IEnumerable<TEntity> entity);
+
+        bool Any(TPrimaryKey key);
     }
 }

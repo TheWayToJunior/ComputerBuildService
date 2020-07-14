@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ComputerBuildService.Shared.ViewModels
 {
-    public class ProcessorAddViewModel
+    public class ProcessorAddViewModel : IEntity<int>
     {
         public int Id { get; set; }
 

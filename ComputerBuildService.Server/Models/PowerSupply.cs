@@ -1,11 +1,12 @@
-﻿using System;
+﻿using ComputerBuildService.Server.IServices;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace ComputerBuildService.Shared.Models
 {
-    public class PowerSupply
+    public class PowerSupply : IEntity<int>
     {
         [Key]
         public int Id { get; set; }

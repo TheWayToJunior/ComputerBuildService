@@ -1,6 +1,8 @@
-﻿namespace ComputerBuildService.Shared.ViewModels
+﻿using ComputerBuildService;
+
+namespace ComputerBuildService.Shared.ViewModels
 {
-    public class GraphicsViewModel
+    public class GraphicsViewModel : IEntity<int>
     {
         public int Id { get; set; }
 

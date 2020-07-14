@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ComputerBuildService.Server.IServices;
+using System.ComponentModel.DataAnnotations;
 
 namespace ComputerBuildService.Shared.Models
 {
-    public class RandomAccessMemory
+    public class RandomAccessMemory : IEntity<int>
     {
         [Key]
         public int Id { get; set; }

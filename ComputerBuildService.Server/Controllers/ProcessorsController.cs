@@ -14,9 +14,9 @@ namespace ComputerBuildService.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProcessorsController : GenericController<Processor, ProcessorViewModel>
+    public class ProcessorsController : GenericController<Processor, ProcessorViewModel, int>
     {
-        public ProcessorsController(IApplicationDbService<Processor> servise,
+        public ProcessorsController(IApplicationDbService<Processor, int> servise,
             IMapper mapper, ILogger<ProcessorsController> logger) : base(servise, mapper, logger)
         {
         }

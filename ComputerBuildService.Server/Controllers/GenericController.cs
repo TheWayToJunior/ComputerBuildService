@@ -12,16 +12,16 @@ namespace ComputerBuildService.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public abstract class GenericController<TModel, TViewModel> : ControllerBase
-        where TModel : class
-        where TViewModel : class
+    public abstract class GenericController<TModel, TViewModel, TPrimaryKey> : ControllerBase
+        where TModel : class, IEntity<TPrimaryKey>
+        where TViewModel : class, IEntity<TPrimaryKey>
     {
-        protected readonly IApplicationDbService<TModel> servise;
+        protected readonly IApplicationDbService<TModel, TPrimaryKey> servise;
         protected readonly IMapper mapper;
-        protected readonly ILogger<GenericController<TModel, TViewModel>> logger;
+        protected readonly ILogger<GenericController<TModel, TViewModel, TPrimaryKey>> logger;
 
-        public GenericController(IApplicationDbService<TModel> servise,
-            IMapper mapper, ILogger<GenericController<TModel, TViewModel>> logger)
+        public GenericController(IApplicationDbService<TModel, TPrimaryKey> servise,
+            IMapper mapper, ILogger<GenericController<TModel, TViewModel, TPrimaryKey>> logger)
         {
             this.servise = servise ?? throw new ArgumentNullException(nameof(servise));
             this.mapper = mapper   ?? throw new ArgumentNullException(nameof(mapper));
@@ -80,6 +80,44 @@ namespace ComputerBuildService.Server.Controllers
                 logger.LogError(ex.InnerException.Message);
 
                 return StatusCode(500, ex.InnerException.Message);
+            }
+        }
+
+        [HttpPut("{id}")]
+        public virtual IActionResult Put(TPrimaryKey id, [FromBody] TViewModel viewModel)
+        {
+            if (viewModel == null)
+                return BadRequest($"The argument {nameof(viewModel)} cannot be null");
+
+            if (!viewModel.Id.Equals(id))
+                return BadRequest();
+
+            var model = mapper.Map<TModel>(viewModel);
+
+            try
+            {
+                servise.Update(model);
+
+                logger.LogInformation("The entity has been update");
+
+                servise.SaveChanges();
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                var exists = servise.Any(id);
+
+                if (!exists)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    logger.LogError(ex.InnerException.Message);
+
+                    return StatusCode(500, ex.InnerException.Message);
+                }
             }
         }
 

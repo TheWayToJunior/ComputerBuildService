@@ -41,7 +41,7 @@ namespace ComputerBuildService.Server
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
 
-            services.AddScoped<IApplicationDbService<Processor>, ApplicationDbService<Processor>>();
+            services.AddScoped<IApplicationDbService<Processor, int>, ApplicationDbService<Processor, int>>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

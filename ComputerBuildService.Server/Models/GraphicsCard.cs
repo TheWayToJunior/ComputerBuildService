@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ComputerBuildService.Server.IServices;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace ComputerBuildService.Shared.Models
 {
-    public class GraphicsCard
+    public class GraphicsCard : IEntity<int>
     {
         [Key]
         public int Id { get; set; }

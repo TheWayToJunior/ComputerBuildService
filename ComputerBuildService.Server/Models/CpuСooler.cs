@@ -1,9 +1,10 @@
-﻿using System;
+﻿using ComputerBuildService.Server.IServices;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace ComputerBuildService.Shared.Models
 {
-    public class CpuСooler
+    public class CpuСooler : IEntity<int>
     {
         [Key]
         public int Id { get; set; }

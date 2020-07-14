@@ -1,16 +1,14 @@
-﻿using ComputerBuildService.Server.Helpers;
-using ComputerBuildService.Server.IServices;
+﻿using ComputerBuildService.Server.IServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 
 namespace ComputerBuildService.Server.Services
 {
-    public class Repository<TEntity> : IRepository<TEntity>
-        where TEntity : class
+    public class Repository<TEntity, TPrimaryKey> : IRepository<TEntity, TPrimaryKey>
+        where TEntity : class, IEntity<TPrimaryKey>
     {
         protected readonly DbContext Context;
 
@@ -31,7 +29,7 @@ namespace ComputerBuildService.Server.Services
 
         public EntityEntry<TEntity> Add(TEntity entity)
         {
-           return Context.Set<TEntity>().Add(entity);
+            return Context.Set<TEntity>().Add(entity);
         }
 
         public void AddRange(IEnumerable<TEntity> entity)
@@ -52,6 +50,11 @@ namespace ComputerBuildService.Server.Services
         public void RemoveRange(IEnumerable<TEntity> entity)
         {
             Context.Set<TEntity>().RemoveRange(entity);
+        }
+
+        public bool Any(TPrimaryKey key)
+        {
+            return Context.Set<TEntity>().Any(s => s.Id.Equals(key));
         }
     }
 }

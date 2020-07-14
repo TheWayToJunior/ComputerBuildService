@@ -12,7 +12,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "api/computerbuild",
+      "launchUrl": "api/processors",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -20,7 +20,7 @@
     "ComputerBuildService.Server": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/computerbuild",
+      "launchUrl": "api/processors",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
@@ -29,7 +29,7 @@
     "Docker": {
       "commandName": "Docker",
       "launchBrowser": true,
-      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/api/computerbuild",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/api/processors",
       "publishAllPorts": true,
       "useSSL": true
     }

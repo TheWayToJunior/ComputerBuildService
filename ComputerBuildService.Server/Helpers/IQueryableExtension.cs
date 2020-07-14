@@ -8,11 +8,11 @@ namespace ComputerBuildService.Server.Helpers
     public static class IQueryableExtension
     {
         /// <summary>
-        /// Формирует запрос на выборку заданного диапазона объектов из хранилища
+        /// Формирует запрос на выборку для указанного индекса
         /// </summary>
-        /// <param name="index">Начальный объект выборки</param>
+        /// <param name="index">Необходимый индекс</param>
         /// <param name="size">Количество выбранных объектов</param>
-        public static IQueryable<T> GetRange<T>(this IQueryable<T> queryable, int index, int size)
+        public static IQueryable<T> Pagination<T>(this IQueryable<T> queryable, int index, int size)
         {
             return queryable
                 .Skip((index - 1) * size)

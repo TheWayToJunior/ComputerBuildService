@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -6,14 +7,13 @@ using System.Linq.Expressions;
 namespace ComputerBuildService.Server.IServices
 {
     public interface IRepository<TEntity>
+        where TEntity : class
     {
         IQueryable<TEntity> GetAll();
 
-        IQueryable<TEntity> GerRange(int index, int size);
-
         TEntity Get(int id);
 
-        void Add(TEntity entity);
+        EntityEntry<TEntity> Add(TEntity entity);
 
         void AddRange(IEnumerable<TEntity> entity);
 
@@ -22,7 +22,5 @@ namespace ComputerBuildService.Server.IServices
         void Remove(TEntity entity);
 
         void RemoveRange(IEnumerable<TEntity> entity);
-
-        IQueryable<TEntity> Include<TProperty>(Expression<Func<TEntity, TProperty>> navPath);
     }
 }

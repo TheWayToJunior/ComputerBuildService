@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ComputerBuildService.Shared.ViewModels
 {
-    public class ProcessorViewModel
+    public class ProcessorAddViewModel
     {
         public int Id { get; set; }
 
@@ -27,7 +27,5 @@ namespace ComputerBuildService.Shared.ViewModels
         public int NumberOfCores { get; set; }
 
         public int IntegratedGraphicsId { get; set; }
-
-        public GraphicsViewModel IntegratedGraphics { get; set; }
     }
 }

@@ -2,10 +2,6 @@
 using ComputerBuildService.Shared.Models;
 using ComputerBuildService.Shared.Models.IntegratedModule;
 using ComputerBuildService.Shared.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ComputerBuildService.Server.Profiles
 {
@@ -13,11 +9,12 @@ namespace ComputerBuildService.Server.Profiles
     {
         public ApplicatinProfile()
         {
-            CreateMap<CentralProcessorUnit, ProcessorViewModel>();
-            CreateMap<ProcessorViewModel, CentralProcessorUnit>();
+            CreateMap<Processor, ProcessorViewModel>();
+            CreateMap<ProcessorViewModel, Processor>()
+                .ForMember(viewModel => viewModel.IntegratedGraphics, memberOptins => memberOptins.Ignore());
 
-            CreateMap<IntegratedGraphics, GraphicsViewModel>();
             CreateMap<GraphicsViewModel, IntegratedGraphics>();
+            CreateMap<IntegratedGraphics, GraphicsViewModel>();
         }
     }
 }

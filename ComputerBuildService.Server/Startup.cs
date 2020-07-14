@@ -3,6 +3,7 @@ using ComputerBuildService.Server.Data;
 using ComputerBuildService.Server.IServices;
 using ComputerBuildService.Server.Profiles;
 using ComputerBuildService.Server.Services;
+using ComputerBuildService.Shared.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -40,7 +41,7 @@ namespace ComputerBuildService.Server
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
 
-            services.AddScoped<IProcessorServise, ProcessorServise>();
+            services.AddScoped<IApplicationDbService<Processor>, ApplicationDbService<Processor>>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

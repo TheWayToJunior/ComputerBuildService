@@ -14,7 +14,7 @@ namespace ComputerBuildService.Server.Data
         {
         }
 
-        public DbSet<CentralProcessorUnit> Processors { get; set; }
+        public DbSet<Processor> Processors { get; set; }
 
         public DbSet<IntegratedProcessor> IntegratedProcessors { get; set; }
 
@@ -46,9 +46,9 @@ namespace ComputerBuildService.Server.Data
                 .HasForeignKey(m => m.IntegratedProcessorId)
                 .OnDelete(DeleteBehavior.ClientNoAction);
 
-            modelBuilder.Entity<CentralProcessorUnit>()
+            modelBuilder.Entity<Processor>()
                 .HasOne(cpu => cpu.IntegratedGraphics)
-                .WithMany(ig => ig.CentralProcessorUnits)
+                .WithMany(ig => ig.Processors)
                 .HasForeignKey(cpu => cpu.IntegratedGraphicsId);
 
             modelBuilder.Entity<IntegratedGraphics>().HasData(new IntegratedGraphics[]
@@ -64,9 +64,9 @@ namespace ComputerBuildService.Server.Data
                 }
             });
 
-            modelBuilder.Entity<CentralProcessorUnit>().HasData(new CentralProcessorUnit[] 
+            modelBuilder.Entity<Processor>().HasData(new Processor[] 
             {
-                new CentralProcessorUnit
+                new Processor
                 {
                    Id = 1,
                    Maker = "AMD",

@@ -1,6 +1,7 @@
 ﻿using ComputerBuildService.Server.Helpers;
 using ComputerBuildService.Server.IServices;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,19 +24,14 @@ namespace ComputerBuildService.Server.Services
             return Context.Set<TEntity>();
         }
 
-        public IQueryable<TEntity> GerRange(int index, int size)
-        {
-            return Context.Set<TEntity>().GetRange(index, size);
-        }
-
         public TEntity Get(int id)
         {
             return Context.Set<TEntity>().Find(id);
         }
 
-        public void Add(TEntity entity)
+        public EntityEntry<TEntity> Add(TEntity entity)
         {
-            Context.Set<TEntity>().Add(entity);
+           return Context.Set<TEntity>().Add(entity);
         }
 
         public void AddRange(IEnumerable<TEntity> entity)
@@ -56,11 +52,6 @@ namespace ComputerBuildService.Server.Services
         public void RemoveRange(IEnumerable<TEntity> entity)
         {
             Context.Set<TEntity>().RemoveRange(entity);
-        }
-
-        public IQueryable<TEntity> Include<TProperty>(Expression<Func<TEntity, TProperty>> navPath)
-        {
-            return Context.Set<TEntity>().Include(navPath);
         }
     }
 }

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ComputerBuildService.Shared.Models
 {
-    public class CentralProcessorUnit
+    public class Processor
     {
         [Key]
         public int Id { get; set; }

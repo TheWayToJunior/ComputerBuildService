@@ -1,40 +1,16 @@
 ﻿using ComputerBuildService.Server.IServices;
+using ComputerBuildService.Server.Models.Base;
 using ComputerBuildService.Shared.Models.IntegratedModule;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ComputerBuildService.Shared.Models
 {
-    public class Processor : IEntity<int>
+    public class Processor : ProcessorBase
     {
-        [Key]
-        public int Id { get; set; }
-
         [Required]
-        public string Maker { get; set; }
-
-        /// <summary>
-        /// Линейка процессоров
-        /// </summary>
-        [Required]
-        public string RangeOf { get; set; }
-
-        [Required]
-        [MaxLength(32)]
-        public string Model { get; set; }
-
-        [Required]
-        [MaxLength(16)]
-        public string Socket { get; set; }
-
-        /// <summary>
-        /// Тактовая частота процессора
-        /// </summary>
-        [Required]
-        public int FrequencyCore { get; set; }
-
-        [Required]
-        public int NumberOfCores { get; set; }
+        [Column(TypeName = "Money")]
+        public decimal Price { get; set; }
 
         public int? IntegratedGraphicsId { get; set; }
 

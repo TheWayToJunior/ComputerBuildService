@@ -26,6 +26,8 @@ namespace ComputerBuildService.Shared.ViewModels
 
         public int NumberOfCores { get; set; }
 
+        public decimal Price { get; set; }
+
         public int IntegratedGraphicsId { get; set; }
 
         public GraphicsViewModel IntegratedGraphics { get; set; }

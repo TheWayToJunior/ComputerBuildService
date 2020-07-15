@@ -13,8 +13,11 @@ namespace ComputerBuildService.Server.Profiles
             CreateMap<ProcessorViewModel, Processor>()
                 .ForMember(viewModel => viewModel.IntegratedGraphics, memberOptins => memberOptins.Ignore());
 
-            CreateMap<GraphicsViewModel, IntegratedGraphics>();
+            CreateMap<GraphicsCard, GraphicsViewModel>();
+            CreateMap<GraphicsViewModel, GraphicsCard>();
+
             CreateMap<IntegratedGraphics, GraphicsViewModel>();
+            CreateMap<GraphicsViewModel, IntegratedGraphics>();
         }
     }
 }

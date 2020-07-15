@@ -42,6 +42,7 @@ namespace ComputerBuildService.Server
             services.AddSingleton(mapper);
 
             services.AddScoped<IApplicationDbService<Processor, int>, ApplicationDbService<Processor, int>>();
+            services.AddScoped<IApplicationDbService<GraphicsCard, int>, ApplicationDbService<GraphicsCard, int>>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -42,7 +42,7 @@ namespace ComputerBuildService.Server.Controllers
         }
 
         [HttpGet("{id}")]
-        public virtual ActionResult<TViewModel> Get(int id)
+        public virtual ActionResult<TViewModel> Get(TPrimaryKey id)
         {
             var entity = servise.Get(id);
 
@@ -122,7 +122,7 @@ namespace ComputerBuildService.Server.Controllers
         }
 
         [HttpDelete("{id}")]
-        public virtual IActionResult Delete(int id)
+        public virtual IActionResult Delete(TPrimaryKey id)
         {
             var entity = servise.Get(id);
 

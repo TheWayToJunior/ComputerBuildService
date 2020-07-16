@@ -9,7 +9,7 @@ namespace ComputerBuildService.Server.IServices
     {
         IQueryable<TEntity> GetAll();
 
-        TEntity Get(int id);
+        TEntity Get(TPrimaryKey id);
 
         EntityEntry<TEntity> Add(TEntity entity);
 

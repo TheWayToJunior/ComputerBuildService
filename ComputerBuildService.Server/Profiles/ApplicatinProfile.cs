@@ -18,6 +18,9 @@ namespace ComputerBuildService.Server.Profiles
 
             CreateMap<IntegratedGraphics, GraphicsViewModel>();
             CreateMap<GraphicsViewModel, IntegratedGraphics>();
+
+            CreateMap<CpuСooler, CpuСoolerViewModel>();
+            CreateMap<CpuСoolerViewModel, CpuСooler>();
         }
     }
 }

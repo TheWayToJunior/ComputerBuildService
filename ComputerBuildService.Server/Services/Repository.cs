@@ -22,7 +22,7 @@ namespace ComputerBuildService.Server.Services
             return Context.Set<TEntity>();
         }
 
-        public TEntity Get(int id)
+        public TEntity Get(TPrimaryKey id)
         {
             return Context.Set<TEntity>().Find(id);
         }

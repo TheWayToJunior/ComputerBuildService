@@ -43,6 +43,7 @@ namespace ComputerBuildService.Server
 
             services.AddScoped<IApplicationDbService<Processor, int>, ApplicationDbService<Processor, int>>();
             services.AddScoped<IApplicationDbService<GraphicsCard, int>, ApplicationDbService<GraphicsCard, int>>();
+            services.AddScoped<IApplicationDbService<CpuÑooler, int>, ApplicationDbService<CpuÑooler, int>>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

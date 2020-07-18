@@ -1,12 +1,14 @@
-﻿using ComputerBuildService.Server.Models.Base;
-using System;
+﻿using ComputerBuildService.Shared.EntitysBase;
 using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace ComputerBuildService.Shared.Models.IntegratedModule
 {
-    public class IntegratedProcessor : ProcessorBase
+    public class IntegratedProcessor : ProcessorBase, IEntity<int>
     {
+        [Key]
+        public int Id { get; set; }
+
         public virtual ICollection<Motherboard> Motherboards { get; set; }
     }
 }

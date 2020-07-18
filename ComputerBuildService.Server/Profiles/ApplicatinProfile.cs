@@ -9,18 +9,57 @@ namespace ComputerBuildService.Server.Profiles
     {
         public ApplicatinProfile()
         {
-            CreateMap<Processor, ProcessorViewModel>();
-            CreateMap<ProcessorViewModel, Processor>()
-                .ForMember(viewModel => viewModel.IntegratedGraphics, memberOptins => memberOptins.Ignore());
+            #region Processor entity Mapping
 
-            CreateMap<GraphicsCard, GraphicsViewModel>();
-            CreateMap<GraphicsViewModel, GraphicsCard>();
+            /// Response
+            CreateMap<Processor, ProcessorResponse>();
+            CreateMap<ProcessorResponse, Processor>();
 
-            CreateMap<IntegratedGraphics, GraphicsViewModel>();
-            CreateMap<GraphicsViewModel, IntegratedGraphics>();
+            CreateMap<Processor, ProcessorInfo>();
 
-            CreateMap<CpuСooler, CpuСoolerViewModel>();
-            CreateMap<CpuСoolerViewModel, CpuСooler>();
+            /// Request
+            CreateMap<Processor, ProcessorRequest>();
+            CreateMap<ProcessorRequest, Processor>();
+
+            #endregion
+
+            #region GraphicsCard entity Mapping
+
+            /// Response
+            CreateMap<GraphicsCard, GraphicsResponse>();
+            CreateMap<GraphicsResponse, GraphicsCard>();
+
+            /// Request
+            CreateMap<GraphicsCard, GraphicsRequest>();
+            CreateMap<GraphicsRequest, GraphicsCard>();
+
+            #endregion
+
+            #region IntegratedGraphics entity Mapping
+
+            /// Response
+            CreateMap<IntegratedGraphics, IntegratedGraphicsResponse>();
+            CreateMap<IntegratedGraphicsResponse, IntegratedGraphics>();
+
+            CreateMap<IntegratedGraphics, IntegratedGraphicsInfo>();
+
+            /// Request
+            CreateMap<IntegratedGraphics, IntegratedGraphicsRequest>();
+            CreateMap<IntegratedGraphicsRequest, IntegratedGraphics>();
+
+            #endregion
+
+            #region CpuСooler entity Mapping
+
+            /// Response
+            CreateMap<CpuСooler, CpuСoolerResponse>();
+            CreateMap<CpuСoolerResponse, CpuСooler>();
+
+            /// Request
+            CreateMap<CpuСooler, CpuСoolerRequest>();
+            CreateMap<CpuСoolerRequest, CpuСooler>();
+
+            #endregion
         }
     }
 }

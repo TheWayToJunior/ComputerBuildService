@@ -1,17 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.DataAnnotations;
 
-namespace ComputerBuildService.Shared.ViewModels
+namespace ComputerBuildService.Shared.EntitysBase
 {
-    public class CpuСoolerViewModel : IEntity<int>
+    public abstract class CpuСoolerBase
     {
-        public int Id { get; set; }
-
+        [Required]
         public string Name { get; set; }
 
+        [MaxLength(12)]
         public string SizeBlower { get; set; }
 
+        [Required]
+        [Range(1, 5)]
         public int NumberBlower { get; set; }
 
         public string RotationSpeed { get; set; }
@@ -24,6 +25,7 @@ namespace ComputerBuildService.Shared.ViewModels
         /// <summary>
         /// Совместимые сокеты
         /// </summary>
+        [Required]
         public string Sockets { get; set; }
     }
 }

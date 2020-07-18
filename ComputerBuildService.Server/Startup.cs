@@ -4,6 +4,7 @@ using ComputerBuildService.Server.IServices;
 using ComputerBuildService.Server.Profiles;
 using ComputerBuildService.Server.Services;
 using ComputerBuildService.Shared.Models;
+using ComputerBuildService.Shared.Models.IntegratedModule;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -44,6 +45,7 @@ namespace ComputerBuildService.Server
             services.AddScoped<IApplicationDbService<Processor, int>, ApplicationDbService<Processor, int>>();
             services.AddScoped<IApplicationDbService<GraphicsCard, int>, ApplicationDbService<GraphicsCard, int>>();
             services.AddScoped<IApplicationDbService<CpuÑooler, int>, ApplicationDbService<CpuÑooler, int>>();
+            services.AddScoped<IApplicationDbService<IntegratedGraphics, int>, ApplicationDbService<IntegratedGraphics, int>>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

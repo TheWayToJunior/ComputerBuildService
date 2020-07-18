@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ComputerBuildService.Server.Helpers;
 using ComputerBuildService.Server.IServices;
+using ComputerBuildService.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -10,18 +11,26 @@ using System.Threading.Tasks;
 
 namespace ComputerBuildService.Server.Controllers
 {
+    /// <summary>
+    /// Базовый общанный REST API Controller
+    /// </summary>
+    /// <typeparam name="TModel">Модель данных</typeparam>
+    /// <typeparam name="TRequest">Получаемое от клиента DTO, на основе которого будет обрабатываться модель</typeparam>
+    /// <typeparam name="TResponse">Обьект отправляемый на клинт вместо основной модели</typeparam>
+    /// <typeparam name="TPrimaryKey">Наследованный тип Id свойства от IEntity<TPrimaryKey></typeparam>
     [Route("api/[controller]")]
     [ApiController]
-    public abstract class GenericController<TModel, TViewModel, TPrimaryKey> : ControllerBase
+    public abstract class GenericController<TModel, TRequest, TResponse, TPrimaryKey> : ControllerBase
         where TModel : class, IEntity<TPrimaryKey>
-        where TViewModel : class, IEntity<TPrimaryKey>
+        where TRequest : class
+        where TResponse : class
     {
         protected readonly IApplicationDbService<TModel, TPrimaryKey> servise;
         protected readonly IMapper mapper;
-        protected readonly ILogger<GenericController<TModel, TViewModel, TPrimaryKey>> logger;
+        protected readonly ILogger<GenericController<TModel, TRequest, TResponse, TPrimaryKey>> logger;
 
         public GenericController(IApplicationDbService<TModel, TPrimaryKey> servise,
-            IMapper mapper, ILogger<GenericController<TModel, TViewModel, TPrimaryKey>> logger)
+            IMapper mapper, ILogger<GenericController<TModel, TRequest, TResponse, TPrimaryKey>> logger)
         {
             this.servise = servise ?? throw new ArgumentNullException(nameof(servise));
             this.mapper = mapper   ?? throw new ArgumentNullException(nameof(mapper));
@@ -29,51 +38,53 @@ namespace ComputerBuildService.Server.Controllers
         }
 
         [HttpGet]
-        public virtual async Task<ActionResult<IEnumerable<TViewModel>>> Get(int index = 1, int size = 5)
+        public virtual async Task<ActionResult<IEnumerable<TResponse>>> GetAll([FromQuery] Pagination pagination)
         {
             var models = await servise
                 .GetAll()
-                .Pagination(index, size)
+                .Pagination(pagination.Index, pagination.Size)
                 .ToArrayAsync();
 
-            var viewModels = mapper.Map<TViewModel[]>(models);
+            var response = mapper.Map<TResponse[]>(models);
 
-            return Ok(viewModels);
+            return Ok(response);
         }
 
         [HttpGet("{id}")]
-        public virtual ActionResult<TViewModel> Get(TPrimaryKey id)
+        public virtual ActionResult<TResponse> Get(TPrimaryKey id)
         {
             var entity = servise.Get(id);
 
             if (entity == null)
                 return NotFound();
 
-            var viewModel = mapper.Map<TViewModel>(entity);
+            var response = mapper.Map<TResponse>(entity);
 
-            return Ok(viewModel);
+            return Ok(response);
         }
 
         [HttpPost]
-        public virtual IActionResult Add([FromBody] TViewModel viewModel)
+        public virtual IActionResult Add([FromBody] TRequest requestModel)
         {
-            if (viewModel == null)
-                return BadRequest($"The argument {nameof(viewModel)} cannot be null");
+            if (requestModel == null)
+                return BadRequest($"The argument {nameof(requestModel)} cannot be null");
 
-            var model = mapper.Map<TModel>(viewModel);
+            var model = mapper.Map<TModel>(requestModel);
 
             try
             {
-                var entityEntry = servise.Add(model);
+                var entity = servise.Add(model);
 
                 logger.LogInformation("The entity has been added");
 
                 servise.SaveChanges();
 
+                var response = mapper.Map<TResponse>(entity);
+
                 return CreatedAtAction(
                     "Get",
-                    new { Id = (int)entityEntry.Property("Id").OriginalValue },
-                    entityEntry.Entity);
+                    new { Id = entity.Id },
+                    response);
             }
             catch (Exception ex)
             {
@@ -84,18 +95,19 @@ namespace ComputerBuildService.Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public virtual IActionResult Put(TPrimaryKey id, [FromBody] TViewModel viewModel)
+        public virtual IActionResult Update(TPrimaryKey id, [FromBody] TRequest requestModel)
         {
-            if (viewModel == null)
-                return BadRequest($"The argument {nameof(viewModel)} cannot be null");
+            if (requestModel == null)
+                return BadRequest($"The argument {nameof(requestModel)} cannot be null");
 
-            if (!viewModel.Id.Equals(id))
+            var model = mapper.Map<TModel>(requestModel);
+
+            if (!model.Id.Equals(id))
                 return BadRequest();
-
-            var model = mapper.Map<TModel>(viewModel);
 
             try
             {
+                /// Возможен сценнарий отсуцтвия объекта в базе данных
                 servise.Update(model);
 
                 logger.LogInformation("The entity has been update");
@@ -106,6 +118,8 @@ namespace ComputerBuildService.Server.Controllers
             }
             catch (Exception ex)
             {
+                /// В случае ошибки проверяется существует ли такой объект в базе,
+                /// если объект найден, значит не удалось обновить его
                 var exists = servise.Any(id);
 
                 if (!exists)

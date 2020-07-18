@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace ComputerBuildService.Server.IServices
 {
@@ -11,7 +13,7 @@ namespace ComputerBuildService.Server.IServices
 
         TEntity Get(TPrimaryKey id);
 
-        EntityEntry<TEntity> Add(TEntity entity);
+        TEntity Add(TEntity entity);
 
         void AddRange(IEnumerable<TEntity> entity);
 
@@ -22,5 +24,7 @@ namespace ComputerBuildService.Server.IServices
         void RemoveRange(IEnumerable<TEntity> entity);
 
         bool Any(TPrimaryKey key);
+
+        IQueryable<TEntity> Include(params Expression<Func<TEntity, object>>[] navigations);
     }
 }

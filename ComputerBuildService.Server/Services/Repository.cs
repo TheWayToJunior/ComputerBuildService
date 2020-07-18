@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace ComputerBuildService.Server.Services
 {
@@ -27,9 +28,9 @@ namespace ComputerBuildService.Server.Services
             return Context.Set<TEntity>().Find(id);
         }
 
-        public EntityEntry<TEntity> Add(TEntity entity)
+        public TEntity Add(TEntity entity)
         {
-            return Context.Set<TEntity>().Add(entity);
+            return Context.Set<TEntity>().Add(entity)?.Entity;
         }
 
         public void AddRange(IEnumerable<TEntity> entity)
@@ -55,6 +56,20 @@ namespace ComputerBuildService.Server.Services
         public bool Any(TPrimaryKey key)
         {
             return Context.Set<TEntity>().Any(s => s.Id.Equals(key));
+        }
+
+        public IQueryable<TEntity> Include(params Expression<Func<TEntity, object>>[] navigations)
+        {
+            var context = Context.Set<TEntity>();
+
+            IQueryable<TEntity> query = null;
+
+            foreach (var item in navigations)
+            {
+                query = context.Include(item);
+            }
+
+            return query ?? context;
         }
     }
 }

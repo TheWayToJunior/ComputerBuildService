@@ -9,7 +9,7 @@ namespace ComputerBuildService.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GraphicsCardController : GenericController<GraphicsCard, GraphicsViewModel, int>
+    public class GraphicsCardController : GenericController<GraphicsCard, GraphicsRequest, GraphicsResponse, int>
     {
         public GraphicsCardController(IApplicationDbService<GraphicsCard, int> servise,
            IMapper mapper, ILogger<GraphicsCardController> logger) : base(servise, mapper, logger)

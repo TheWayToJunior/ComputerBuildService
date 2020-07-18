@@ -19,7 +19,7 @@
     },
     "ComputerBuildService.Server": {
       "commandName": "Project",
-      "launchBrowser": true,
+      //"launchBrowser": true,
       "launchUrl": "api/processors",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

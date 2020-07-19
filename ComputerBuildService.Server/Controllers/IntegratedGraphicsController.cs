@@ -23,6 +23,7 @@ namespace ComputerBuildService.Server.Controllers
         {
         }
 
+        [HttpGet]
         public async override Task<ActionResult<IEnumerable<IntegratedGraphicsResponse>>> GetAll([FromQuery] Pagination pagination)
         {
             var models = await servise

@@ -8,6 +8,8 @@ namespace ComputerBuildService.Shared.ViewModels
         public int Id { get; set; }
 
         public IEnumerable<ProcessorInfo> Processors { get; set; }
+
+        public IEnumerable<MotherboardInfo> Motherboards { get; set; }
     }
 
     public class IntegratedGraphicsRequest : GraphicsBase

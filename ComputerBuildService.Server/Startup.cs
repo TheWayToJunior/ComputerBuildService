@@ -1,5 +1,7 @@
 using AutoMapper;
+using ComputerBuildService.Server.Configuration;
 using ComputerBuildService.Server.Data;
+using ComputerBuildService.Server.Helpers;
 using ComputerBuildService.Server.IServices;
 using ComputerBuildService.Server.Profiles;
 using ComputerBuildService.Server.Services;
@@ -11,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace ComputerBuildService.Server
 {
@@ -42,10 +45,13 @@ namespace ComputerBuildService.Server
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
 
-            services.AddScoped<IApplicationDbService<Processor, int>, ApplicationDbService<Processor, int>>();
-            services.AddScoped<IApplicationDbService<GraphicsCard, int>, ApplicationDbService<GraphicsCard, int>>();
-            services.AddScoped<IApplicationDbService<Cpu—ooler, int>, ApplicationDbService<Cpu—ooler, int>>();
-            services.AddScoped<IApplicationDbService<IntegratedGraphics, int>, ApplicationDbService<IntegratedGraphics, int>>();
+            var dbServices = services.AddDbService(
+                 new DbServiceOptions<Processor, int>("processorServeice"),
+                 new DbServiceOptions<Cpu—ooler, int>("cpu—oolerServeice"),
+                 new DbServiceOptions<Motherboard, int>("motherboardServeice"),
+                 new DbServiceOptions<GraphicsCard, int>("graphicsCardServeice"),
+                 new DbServiceOptions<IntegratedGraphics, int>("integratedGraphicsServeice")
+             );
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

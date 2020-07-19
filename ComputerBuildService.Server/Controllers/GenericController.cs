@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace ComputerBuildService.Server.Controllers
 {
     /// <summary>
-    /// Базовый общанный REST API Controller
+    /// Базовый обобщённый REST API Controller
     /// </summary>
     /// <typeparam name="TModel">Модель данных</typeparam>
     /// <typeparam name="TRequest">Получаемое от клиента DTO, на основе которого будет обрабатываться модель</typeparam>

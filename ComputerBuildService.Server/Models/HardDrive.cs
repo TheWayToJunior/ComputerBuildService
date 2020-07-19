@@ -1,5 +1,6 @@
 ﻿using ComputerBuildService.Server.IServices;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ComputerBuildService.Shared.Models
 {
@@ -21,5 +22,9 @@ namespace ComputerBuildService.Shared.Models
         public string ConnectionInterface { get; set; }
 
         public string RotationSpeed { get; set; }
+
+        [Required]
+        [Column(TypeName = "Money")]
+        public decimal Price { get; set; }
     }
 }

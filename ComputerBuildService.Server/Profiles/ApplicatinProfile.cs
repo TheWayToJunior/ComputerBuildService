@@ -60,6 +60,21 @@ namespace ComputerBuildService.Server.Profiles
             CreateMap<CpuСoolerRequest, CpuСooler>();
 
             #endregion
+
+            #region Motherboar entity Mapping
+
+            /// Response
+            CreateMap<Motherboard, MotherboardResponse>();
+            CreateMap<MotherboardResponse, Motherboard>();
+
+            CreateMap<Motherboard, MotherboardInfo>();
+
+            /// Request
+            CreateMap<Motherboard, MotherboardRequest>();
+            CreateMap<MotherboardRequest, Motherboard>();
+
+            #endregion
+
         }
     }
 }

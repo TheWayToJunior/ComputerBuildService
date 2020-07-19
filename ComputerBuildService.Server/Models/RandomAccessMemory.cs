@@ -1,5 +1,6 @@
 ﻿using ComputerBuildService.Server.IServices;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ComputerBuildService.Shared.Models
 {
@@ -32,5 +33,9 @@ namespace ComputerBuildService.Shared.Models
         /// </summary>
         [Required]
         public string Sockets { get; set; }
+
+        [Required]
+        [Column(TypeName = "Money")]
+        public decimal Price { get; set; }
     }
 }

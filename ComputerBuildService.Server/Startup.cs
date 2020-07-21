@@ -1,19 +1,13 @@
 using AutoMapper;
-using ComputerBuildService.Server.Configuration;
 using ComputerBuildService.Server.Data;
 using ComputerBuildService.Server.Helpers;
-using ComputerBuildService.Server.IServices;
 using ComputerBuildService.Server.Profiles;
-using ComputerBuildService.Server.Services;
-using ComputerBuildService.Shared.Models;
-using ComputerBuildService.Shared.Models.IntegratedModule;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
 
 namespace ComputerBuildService.Server
 {
@@ -45,13 +39,7 @@ namespace ComputerBuildService.Server
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
 
-            var dbServices = services.AddDbService(
-                 new DbServiceOptions<Processor, int>("processorServeice"),
-                 new DbServiceOptions<Cpu—ooler, int>("cpu—oolerServeice"),
-                 new DbServiceOptions<Motherboard, int>("motherboardServeice"),
-                 new DbServiceOptions<GraphicsCard, int>("graphicsCardServeice"),
-                 new DbServiceOptions<IntegratedGraphics, int>("integratedGraphicsServeice")
-             );
+            services.InitDbServices();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

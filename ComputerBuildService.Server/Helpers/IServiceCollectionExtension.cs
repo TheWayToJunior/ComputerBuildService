@@ -19,5 +19,10 @@ namespace ComputerBuildService.Server.Helpers
 
             return servicesCollection;
         }
+
+        public static void InitDbServices(this IServiceCollection services)
+        {
+            ConfigureDbServices.Configure(services);
+        }
     }
 }

@@ -43,7 +43,7 @@ namespace ComputerBuildService.Server.Controllers
         {
             var entity = servise
                 .Include(ig => ig.Motherboards, ig => ig.Processors)
-                .FirstOrDefault();
+                .FirstOrDefault(ig => ig.Id == id);
 
             if (entity == null)
                 return NotFound();

@@ -1,75 +1,74 @@
-﻿using ComputerBuildService.Server.IServices;
+﻿using ComputerBuildService.Server.Data;
+using ComputerBuildService.Server.IServices;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace ComputerBuildService.Server.Services
 {
-    public class Repository<TEntity, TPrimaryKey> : IRepository<TEntity, TPrimaryKey>
-        where TEntity : class, IEntity<TPrimaryKey>
+    public class Repository : IRepository
     {
-        protected readonly DbContext Context;
+        private readonly ApplicationDbContext context;
 
-        public Repository(DbContext context)
+        public Repository(ApplicationDbContext context)
         {
-            this.Context = context ?? throw new ArgumentNullException(nameof(context));
+            this.context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public IQueryable<TEntity> GetAll()
+        public IQueryable<TEntity> GetAll<TEntity, TKey>()
+            where TEntity : class, IEntity<TKey>
         {
-            return Context.Set<TEntity>();
+            return context.Set<TEntity>();
         }
 
-        public TEntity Get(TPrimaryKey id)
+        public IQueryable<TEntity> Get<TEntity, TKey>(TKey id)
+            where TEntity : class, IEntity<TKey>
         {
-            return Context.Set<TEntity>().Find(id);
+            return context.Set<TEntity>().Where(entity => entity.Id.Equals(id));
         }
 
-        public TEntity Add(TEntity entity)
+        public async Task<TEntity> Add<TEntity, TKey>(TEntity entity)
+            where TEntity : class, IEntity<TKey>
         {
-            return Context.Set<TEntity>().Add(entity)?.Entity;
+            return (await context.Set<TEntity>().AddAsync(entity))?.Entity;
         }
 
-        public void AddRange(IEnumerable<TEntity> entity)
+        public async Task AddRange<TEntity, TKey>(IEnumerable<TEntity> entity)
+            where TEntity : class, IEntity<TKey>
         {
-            Context.Set<TEntity>().AddRange(entity);
+            await context.Set<TEntity>().AddRangeAsync(entity);
         }
 
-        public void Update(TEntity entity)
+        public void Update<TEntity, TKey>(TEntity entity)
+            where TEntity : class, IEntity<TKey>
         {
-            Context.Entry(entity).State = EntityState.Modified;
+            context.Entry(entity).State = EntityState.Modified;
         }
 
-        public void Remove(TEntity entity)
+        public async Task Remove<TEntity, TKey>(TEntity entity)
+            where TEntity : class, IEntity<TKey>
         {
-            Context.Set<TEntity>().Remove(entity);
+            await Task.Run(() => context.Set<TEntity>().Remove(entity));
         }
 
-        public void RemoveRange(IEnumerable<TEntity> entity)
+        public async Task RemoveRange<TEntity, TKey>(IEnumerable<TEntity> entity)
+            where TEntity : class, IEntity<TKey>
         {
-            Context.Set<TEntity>().RemoveRange(entity);
+            await Task.Run(() => context.Set<TEntity>().RemoveRange(entity));
         }
 
-        public bool Any(TPrimaryKey key)
+        public async Task<bool> Any<TEntity, TKey>(TKey key)
+            where TEntity : class, IEntity<TKey>
         {
-            return Context.Set<TEntity>().Any(s => s.Id.Equals(key));
+            return await context.Set<TEntity>().AnyAsync(s => s.Id.Equals(key));
         }
 
-        public IQueryable<TEntity> Include(params Expression<Func<TEntity, object>>[] navigations)
+        public async Task<int> SaveChangesAsync()
         {
-            var context = Context.Set<TEntity>();
-
-            IQueryable<TEntity> query = null;
-
-            foreach (var item in navigations)
-            {
-                query = context.Include(item);
-            }
-
-            return query ?? context;
+            return await context.SaveChangesAsync();
         }
     }
 }

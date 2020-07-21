@@ -1,53 +1,69 @@
-﻿using AutoMapper;
-using ComputerBuildService.Server.Helpers;
-using ComputerBuildService.Server.IServices;
+﻿using ComputerBuildService.Server.IServices;
 using ComputerBuildService.Shared;
-using ComputerBuildService.Shared.Models;
 using ComputerBuildService.Shared.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ComputerBuildService.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProcessorsController : GenericController<Processor, ProcessorRequest, ProcessorResponse, int>
+    public class ProcessorsController : ControllerBase
     {
-        public ProcessorsController(IApplicationDbService<Processor, int> servise,
-            IMapper mapper, ILogger<ProcessorsController> logger) : base(servise, mapper, logger)
+        private readonly IProcessorService service;
+        private readonly ILogger<ProcessorsController> logger;
+
+        public ProcessorsController(IProcessorService service, ILogger<ProcessorsController> logger)
         {
+            this.service = service ?? throw new ArgumentNullException(nameof(service));
+            this.logger = logger   ?? throw new ArgumentNullException(nameof(logger));
         }
 
         [HttpGet]
-        public override async Task<ActionResult<IEnumerable<ProcessorResponse>>> GetAll([FromQuery] Pagination pagination)
+        public async Task<ActionResult<ResponseObject<IEnumerable<ProcessorResponse>>>> GetAll([FromQuery] Pagination pagination)
         {
-            var models = await servise
-                .GetAll()
-                .Include(cpu => cpu.IntegratedGraphics)
-                .Pagination(pagination.Index, pagination.Size)
-                .ToArrayAsync();
+            return Ok(await service.GetAll(pagination));
+        }
 
-            var response = mapper.Map<ProcessorResponse[]>(models);
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ResponseObject<ProcessorResponse>>> Get(int id)
+        {
+            var response = await service.Get(id);
+
+            if (response == null)
+                return NotFound();
 
             return Ok(response);
         }
 
-        [HttpGet("{id}")]
-        public override ActionResult<ProcessorResponse> Get(int id)
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] ProcessorRequest requestModel)
         {
-            var entity = servise.Include(cpu => cpu.IntegratedGraphics)
-                .FirstOrDefault(cpu => cpu.Id == id);
+            var response = await service.Create(requestModel);
 
-            if (entity == null)
-                return NotFound();
+            return CreatedAtAction(
+                    "Get",
+                    new { Id = response.Value.Id },
+                    response);
+        }
 
-            var response = mapper.Map<ProcessorResponse>(entity);
+        [HttpPut]
+        public async Task<ActionResult<ResponseObject<ProcessorResponse>>> Update([FromBody] ProcessorRequest requestModel)
+        {
+            var result =  await service.Update(requestModel);
 
-            return Ok(response);
+            return Ok(result);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<ResponseObject<ProcessorResponse>>> Delete(int id)
+        {
+            var result = await service.Delete(id);
+
+            return Ok(result);
         }
     }
 }

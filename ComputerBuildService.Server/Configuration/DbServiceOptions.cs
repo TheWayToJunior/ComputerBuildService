@@ -24,8 +24,8 @@ namespace ComputerBuildService.Server.Configuration
 
         public string Key { get; private set; }
 
-        public Type ServiceType => typeof(IApplicationDbService<TModel, TPrimaryKey>);
+        public Type ServiceType => throw new NotImplementedException();
 
-        public Type InplimentalType => typeof(ApplicationDbService<TModel, TPrimaryKey>);
+        public Type InplimentalType => throw new NotImplementedException();
     }
 }

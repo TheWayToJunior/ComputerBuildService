@@ -1,6 +1,4 @@
-﻿using ComputerBuildService.Server.IServices;
-using ComputerBuildService.Server.Services;
-using System;
+﻿using System;
 
 namespace ComputerBuildService.Server.Configuration
 {

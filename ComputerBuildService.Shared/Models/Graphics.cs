@@ -1,4 +1,4 @@
-﻿using ComputerBuildService.Shared.EntitysBase;
+﻿using ComputerBuildService.Shared.ModelBase;
 
 namespace ComputerBuildService.Shared.ViewModels
 {

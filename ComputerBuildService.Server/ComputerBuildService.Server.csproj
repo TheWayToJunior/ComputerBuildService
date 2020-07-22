@@ -19,7 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ComputerBuildService.Shared\ComputerBuildService.Shared.csproj" />
+    <ProjectReference Include="..\ComputerBuildService.Server.Contract\ComputerBuildService.Server.Contract.csproj" />
+    <ProjectReference Include="..\ComputerBuildService.Shared\ComputerBuildService.Server.ViewModel.csproj" />
   </ItemGroup>
 
 

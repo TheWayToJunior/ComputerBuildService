@@ -1,4 +1,4 @@
-﻿using ComputerBuildService.Shared.EntitysBase;
+﻿using ComputerBuildService.Server.Contract.EntitysBase;
 using ComputerBuildService.Shared.Models.IntegratedModule;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

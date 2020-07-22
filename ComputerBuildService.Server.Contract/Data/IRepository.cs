@@ -1,11 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace ComputerBuildService.Server.IServices
+namespace ComputerBuildService.Server.Contract.Data
 {
     public interface IRepository
     {

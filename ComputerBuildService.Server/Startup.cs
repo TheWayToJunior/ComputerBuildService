@@ -1,7 +1,7 @@
 using AutoMapper;
+using ComputerBuildService.Server.Contract.Data;
+using ComputerBuildService.Server.Contract.Services;
 using ComputerBuildService.Server.Data;
-using ComputerBuildService.Server.Helpers;
-using ComputerBuildService.Server.IServices;
 using ComputerBuildService.Server.Profiles;
 using ComputerBuildService.Server.Services;
 using Microsoft.AspNetCore.Builder;

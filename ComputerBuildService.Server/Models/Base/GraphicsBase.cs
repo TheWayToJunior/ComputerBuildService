@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ComputerBuildService.Shared.EntitysBase
+namespace ComputerBuildService.Server.Contract.EntitysBase
 {
     public abstract class GraphicsBase
     {

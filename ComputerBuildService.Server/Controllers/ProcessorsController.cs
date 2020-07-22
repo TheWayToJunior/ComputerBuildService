@@ -1,4 +1,4 @@
-﻿using ComputerBuildService.Server.IServices;
+﻿using ComputerBuildService.Server.Contract.Services;
 using ComputerBuildService.Shared;
 using ComputerBuildService.Shared.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -19,47 +19,43 @@ namespace ComputerBuildService.Server.Controllers
         public ProcessorsController(IProcessorService service, ILogger<ProcessorsController> logger)
         {
             this.service = service ?? throw new ArgumentNullException(nameof(service));
-            this.logger = logger   ?? throw new ArgumentNullException(nameof(logger));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         [HttpGet]
-        public async Task<ActionResult<ResponseObject<IEnumerable<ProcessorResponse>>>> GetAll([FromQuery] Pagination pagination)
+        public async Task<ActionResult<ResultObject<IEnumerable<ProcessorResponse>>>> GetAll([FromQuery] Pagination pagination)
         {
-            return Ok(await service.GetAll(pagination));
+            var response = await service.GetAll(pagination);
+
+            return Ok(response);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ResponseObject<ProcessorResponse>>> Get(int id)
+        public async Task<ActionResult<ResultObject<ProcessorResponse>>> Get(int id)
         {
             var response = await service.Get(id);
-
-            if (response == null)
-                return NotFound();
 
             return Ok(response);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] ProcessorRequest requestModel)
+        public async Task<ActionResult<ResultObject<ProcessorResponse>>> Add([FromBody] ProcessorRequest requestModel)
         {
             var response = await service.Create(requestModel);
 
-            return CreatedAtAction(
-                    "Get",
-                    new { Id = response.Value.Id },
-                    response);
+            return Ok(response);
         }
 
         [HttpPut]
-        public async Task<ActionResult<ResponseObject<ProcessorResponse>>> Update([FromBody] ProcessorRequest requestModel)
+        public async Task<ActionResult<ResultObject<ProcessorResponse>>> Update([FromBody] ProcessorRequest requestModel)
         {
-            var result =  await service.Update(requestModel);
+            var result = await service.Update(requestModel);
 
             return Ok(result);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<ResponseObject<ProcessorResponse>>> Delete(int id)
+        public async Task<ActionResult<ResultObject<ProcessorResponse>>> Delete(int id)
         {
             var result = await service.Delete(id);
 

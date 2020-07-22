@@ -1,5 +1,4 @@
-﻿using ComputerBuildService.Server.Data;
-using ComputerBuildService.Server.IServices;
+﻿using ComputerBuildService.Server.Contract.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace ComputerBuildService.Server.Services
+namespace ComputerBuildService.Server.Data
 {
     public class Repository : IRepository
     {
@@ -33,7 +32,7 @@ namespace ComputerBuildService.Server.Services
         public async Task<TEntity> Add<TEntity, TKey>(TEntity entity)
             where TEntity : class, IEntity<TKey>
         {
-            return (await context.Set<TEntity>().AddAsync(entity))?.Entity;
+            return (await context.Set<TEntity>().AddAsync(entity)).Entity;
         }
 
         public async Task AddRange<TEntity, TKey>(IEnumerable<TEntity> entity)

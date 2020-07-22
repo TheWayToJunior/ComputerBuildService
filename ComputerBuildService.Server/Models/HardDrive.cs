@@ -1,5 +1,4 @@
-﻿using ComputerBuildService.Server.IServices;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ComputerBuildService.Shared.Models

@@ -10,7 +10,7 @@ namespace ComputerBuildService.Server.Data
 {
     public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions optins) : base(optins)
+        public ApplicationDbContext(DbContextOptions options) : base(options)
         {
         }
 

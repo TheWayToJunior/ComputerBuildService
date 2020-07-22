@@ -41,10 +41,11 @@ namespace ComputerBuildService.Server
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
 
-            //services.InitDbServices();
-
             services.AddScoped<IRepository, Repository>();
+            services.AddScoped(typeof(IService<,>), typeof(GenericService<,>));
+
             services.AddScoped<IProcessorService, ProcessorService>();
+            services.AddScoped<IMotherboardService, MotherboardService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

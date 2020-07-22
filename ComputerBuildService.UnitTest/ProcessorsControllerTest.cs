@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using ComputerBuildService.Server.Controllers;
-using ComputerBuildService.Server.IServices;
 using ComputerBuildService.Server.Profiles;
 using ComputerBuildService.Shared;
 using ComputerBuildService.Shared.Models;

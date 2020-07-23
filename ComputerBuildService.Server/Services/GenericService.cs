@@ -24,11 +24,11 @@ namespace ComputerBuildService.Server.Services
             where TResponse : class
         {
             var result = ResultObject<TResponse>.Create();
+
+            if (request == null)
+                return result.AddError(new Exception($"The specified object could not be found by request"));
+
             var model = mapper.Map<TModel>(request);
-
-            if (model == null)
-                return result.AddError(new Exception($"The specified object could not be found by model"));
-
             TModel entity = null;
 
             try
@@ -49,10 +49,11 @@ namespace ComputerBuildService.Server.Services
             where TResponse : class
         {
             var result = ResultObject<TResponse>.Create();
-            var model = mapper.Map<TModel>(request);
 
-            if (model == null)
-                return result.AddError(new Exception($"The specified object could not be found by model"));
+            if (request == null)
+                return result.AddError(new Exception($"The specified object could not be found by request"));
+
+            var model = mapper.Map<TModel>(request);
 
             try
             {

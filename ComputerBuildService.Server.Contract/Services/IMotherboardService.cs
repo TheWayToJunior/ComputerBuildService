@@ -1,15 +1,13 @@
 ﻿using ComputerBuildService.Shared;
 using ComputerBuildService.Shared.ViewModels;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ComputerBuildService.Server.Contract.Services
 {
     public interface IMotherboardService
     {
-        Task<ResultObject<IEnumerable<MotherboardResponse>>> GetAll(Pagination pagination);
+        Task<ResultObject<IEnumerable<MotherboardResponse>>> GetAll(Pagination pagination, SearchOptions options);
 
         Task<ResultObject<MotherboardResponse>> Get(int id);
 

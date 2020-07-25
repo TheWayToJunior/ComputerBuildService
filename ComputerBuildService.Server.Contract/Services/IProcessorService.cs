@@ -1,6 +1,5 @@
 ﻿using ComputerBuildService.Shared;
 using ComputerBuildService.Shared.ViewModels;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -8,7 +7,7 @@ namespace ComputerBuildService.Server.Contract.Services
 {
     public interface IProcessorService
     {
-        Task<ResultObject<IEnumerable<ProcessorResponse>>> GetAll(Pagination pagination);
+        Task<ResultObject<IEnumerable<ProcessorResponse>>> GetAll(Pagination pagination, SearchOptions options);
 
         Task<ResultObject<ProcessorResponse>> Get(int id);
 

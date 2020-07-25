@@ -23,9 +23,11 @@ namespace ComputerBuildService.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ResultObject<IEnumerable<MotherboardResponse>>>> GetAll([FromQuery] Pagination pagination)
+        public async Task<ActionResult<ResultObject<IEnumerable<MotherboardResponse>>>> GetAll(
+            [FromQuery] Pagination pagination,
+            [FromBody] SearchOptions options)
         {
-            var response = await service.GetAll(pagination);
+            var response = await service.GetAll(pagination, options);
 
             return Ok(response);
         }

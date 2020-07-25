@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using ComputerBuildService.Server.Contract.Data;
+﻿using ComputerBuildService.Server.Contract.Data;
 using ComputerBuildService.Server.Contract.Services;
 using ComputerBuildService.Server.Helpers;
 using ComputerBuildService.Shared;
@@ -16,45 +15,41 @@ namespace ComputerBuildService.Server.Services
     {
         private readonly IService<Motherboard, int> service;
         private readonly IRepository repository;
-        private readonly IMapper mapper;
 
-        public MotherboardService(IService<Motherboard, int> service, IRepository repository, IMapper mapper)
+        public MotherboardService(IService<Motherboard, int> service, IRepository repository)
         {
             this.service = service ?? throw new ArgumentNullException(nameof(service));
             this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
-            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<ResultObject<IEnumerable<MotherboardResponse>>> GetAll(Pagination pagination)
+        public async Task<ResultObject<IEnumerable<MotherboardResponse>>> GetAll(Pagination pagination, SearchOptions options)
         {
-            var entity = await repository
-                 .GetAll<Motherboard, int>()
-                 .Include(m => m.IntegratedGraphics)
-                 .Include(m => m.IntegratedProcessor)
-                 .Pagination(pagination.Index, pagination.Size)
-                 .ToArrayAsync();
+            async Task<Motherboard[]> WrappedFunc(Pagination pagin, SearchOptions opt)
+            {
+                return await repository
+                    .GetAll<Motherboard, int>()
+                    .Include(m => m.IntegratedGraphics)
+                    .Include(m => m.IntegratedProcessor)
+                    .Search(opt)
+                    .Pagination(pagin)
+                    .ToArrayAsync();
+            }
 
-            var response = mapper.Map<MotherboardResponse[]>(entity);
-
-            return ResultObject<IEnumerable<MotherboardResponse>>.Create(response);
+            return await service.InvolucreGetAll<MotherboardResponse>(WrappedFunc, pagination, options);
         }
 
-        public async Task<ResultObject<MotherboardResponse>> Get(int id)
+        public async Task<ResultObject<MotherboardResponse>> Get(int objectId)
         {
-            var result = ResultObject<MotherboardResponse>.Create();
+            async Task<Motherboard> WrappedFunc(int id)
+            {
+                return await repository
+                    .Get<Motherboard, int>(id)
+                    .Include(m => m.IntegratedGraphics)
+                    .Include(m => m.IntegratedProcessor)
+                    .FirstOrDefaultAsync(m => m.Id == id);
+            }
 
-            var entity = await repository
-                .Get<Motherboard, int>(id)
-                .Include(m => m.IntegratedGraphics)
-                .Include(m => m.IntegratedProcessor)
-                .FirstOrDefaultAsync(m => m.Id == id);
-
-            if (entity == null)
-                return result.AddError(new Exception($"The specified object could not be found by id {id}"));
-
-            var response = mapper.Map<MotherboardResponse>(entity);
-
-            return result.SetValue(response);
+            return await service.InvolucreGet<MotherboardResponse>(WrappedFunc, objectId);
         }
 
         public async Task<ResultObject<MotherboardResponse>> Create(MotherboardRequest request)

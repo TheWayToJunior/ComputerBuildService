@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using ComputerBuildService.Server.Contract.Data;
+﻿using ComputerBuildService.Server.Contract.Data;
 using ComputerBuildService.Server.Contract.Services;
 using ComputerBuildService.Server.Helpers;
 using ComputerBuildService.Shared;
@@ -16,43 +15,39 @@ namespace ComputerBuildService.Server.Services
     {
         private readonly IService<Processor, int> service;
         private readonly IRepository repository;
-        private readonly IMapper mapper;
 
-        public ProcessorService(IService<Processor, int> service, IRepository repository, IMapper mapper)
+        public ProcessorService(IService<Processor, int> service, IRepository repository)
         {
             this.service = service ?? throw new ArgumentNullException(nameof(service));
             this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
-            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<ResultObject<IEnumerable<ProcessorResponse>>> GetAll(Pagination pagination)
+        public async Task<ResultObject<IEnumerable<ProcessorResponse>>> GetAll(Pagination pagination, SearchOptions options)
         {
-            var entity = await repository
-                .GetAll<Processor, int>()
-                .Include(cpu => cpu.IntegratedGraphics)
-                .Pagination(pagination.Index, pagination.Size)
-                .ToArrayAsync();
+            async Task<Processor[]> WrappedFunc(Pagination pagin, SearchOptions opt)
+            {
+                return await repository
+                    .GetAll<Processor, int>()
+                    .Include(cpu => cpu.IntegratedGraphics)
+                    .Search(opt)
+                    .Pagination(pagin)
+                    .ToArrayAsync();
+            }
 
-            var response = mapper.Map<ProcessorResponse[]>(entity);
-
-            return ResultObject<IEnumerable<ProcessorResponse>>.Create(response);
+            return await service.InvolucreGetAll<ProcessorResponse>(WrappedFunc, pagination, options);
         }
 
-        public async Task<ResultObject<ProcessorResponse>> Get(int id)
+        public async Task<ResultObject<ProcessorResponse>> Get(int objectId)
         {
-            var result = ResultObject<ProcessorResponse>.Create();
+            async Task<Processor> WrappedFunc(int id)
+            {
+                return await repository
+                    .Get<Processor, int>(id)
+                    .Include(cpu => cpu.IntegratedGraphics)
+                    .FirstOrDefaultAsync(cpu => cpu.Id == id);
+            }
 
-            var entity = await repository
-                .Get<Processor, int>(id)
-                .Include(cpu => cpu.IntegratedGraphics)
-                .FirstOrDefaultAsync(cpu => cpu.Id == id);
-
-            if (entity == null)
-                return result.AddError(new Exception($"The specified object could not be found by id {id}"));
-
-            var response = mapper.Map<ProcessorResponse>(entity);
-
-            return result.SetValue(response);
+            return await service.InvolucreGet<ProcessorResponse>(WrappedFunc, objectId);
         }
 
         public async Task<ResultObject<ProcessorResponse>> Create(ProcessorRequest request)

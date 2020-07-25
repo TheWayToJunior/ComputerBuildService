@@ -23,9 +23,11 @@ namespace ComputerBuildService.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ResultObject<IEnumerable<ProcessorResponse>>>> GetAll([FromQuery] Pagination pagination)
+        public async Task<ActionResult<ResultObject<IEnumerable<ProcessorResponse>>>> GetAll(
+            [FromQuery] Pagination pagination,
+            [FromBody] SearchOptions options)
         {
-            var response = await service.GetAll(pagination);
+            var response = await service.GetAll(pagination, options);
 
             return Ok(response);
         }
@@ -39,7 +41,8 @@ namespace ComputerBuildService.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ResultObject<ProcessorResponse>>> Add([FromBody] ProcessorRequest requestModel)
+        public async Task<ActionResult<ResultObject<ProcessorResponse>>> Add(
+            [FromBody] ProcessorRequest requestModel)
         {
             var response = await service.Create(requestModel);
 
@@ -47,7 +50,8 @@ namespace ComputerBuildService.Server.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<ResultObject<ProcessorResponse>>> Update([FromBody] ProcessorRequest requestModel)
+        public async Task<ActionResult<ResultObject<ProcessorResponse>>> Update(
+            [FromBody] ProcessorRequest requestModel)
         {
             var result = await service.Update(requestModel);
 

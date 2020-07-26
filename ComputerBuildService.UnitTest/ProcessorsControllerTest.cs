@@ -1,9 +1,6 @@
-﻿using AutoMapper;
-using ComputerBuildService.Server.Contract.Services;
+﻿using ComputerBuildService.Server.Contract.Services;
 using ComputerBuildService.Server.Controllers;
-using ComputerBuildService.Server.Profiles;
 using ComputerBuildService.Shared;
-using ComputerBuildService.Shared.Models;
 using ComputerBuildService.Shared.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -38,24 +35,24 @@ namespace ComputerBuildService.UnitTest
             return Task.FromResult(result);
         }
 
-        private ProcessorsController CreateController(Mock<IProcessorService> mockService)
+        private ProcessorController CreateController(Mock<IProcessorService> mockService)
         {
-            var mockLogger = new Mock<ILogger<ProcessorsController>>();
+            var mockLogger = new Mock<ILogger<ProcessorController>>();
             var logger = mockLogger.Object;
 
-            return new ProcessorsController(mockService.Object, logger);
+            return new ProcessorController(mockService.Object, logger);
         }
 
         [Fact]
         public async Task GetAll_ReturnsOkResult()
         {
             var mockService = new Mock<IProcessorService>();
-            mockService.Setup(repo => repo.GetAll(It.IsAny<Pagination>()))
+            mockService.Setup(repo => repo.GetAll(It.IsAny<Pagination>(), It.IsAny<SearchOptions>()))
                 .Returns(GetResultObject<IEnumerable<ProcessorResponse>>(GetEntitys().ToArray()));
 
             var controller = CreateController(mockService);
 
-            var response = await controller.GetAll(new Pagination());
+            var response = await controller.GetAll(new Pagination(), new SearchOptions());
 
             Assert.IsType<OkObjectResult>(response.Result);
         }

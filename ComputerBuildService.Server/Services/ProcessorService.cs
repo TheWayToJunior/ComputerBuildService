@@ -24,7 +24,7 @@ namespace ComputerBuildService.Server.Services
 
         public async Task<ResultObject<IEnumerable<ProcessorResponse>>> GetAll(Pagination pagination, SearchOptions options)
         {
-            async Task<Processor[]> WrappedFunc(Pagination pagin, SearchOptions opt)
+            async Task<Processor[]> WrappedGetAll(Pagination pagin, SearchOptions opt)
             {
                 return await repository
                     .GetAll<Processor, int>()
@@ -34,12 +34,12 @@ namespace ComputerBuildService.Server.Services
                     .ToArrayAsync();
             }
 
-            return await service.InvolucreGetAll<ProcessorResponse>(WrappedFunc, pagination, options);
+            return await service.InvolucreGetAll<ProcessorResponse>(WrappedGetAll, pagination, options);
         }
 
         public async Task<ResultObject<ProcessorResponse>> Get(int objectId)
         {
-            async Task<Processor> WrappedFunc(int id)
+            async Task<Processor> WrappedGet(int id)
             {
                 return await repository
                     .Get<Processor, int>(id)
@@ -47,7 +47,7 @@ namespace ComputerBuildService.Server.Services
                     .FirstOrDefaultAsync(cpu => cpu.Id == id);
             }
 
-            return await service.InvolucreGet<ProcessorResponse>(WrappedFunc, objectId);
+            return await service.InvolucreGet<ProcessorResponse>(WrappedGet, objectId);
         }
 
         public async Task<ResultObject<ProcessorResponse>> Create(ProcessorRequest request)

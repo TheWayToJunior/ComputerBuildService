@@ -11,19 +11,19 @@ namespace ComputerBuildService.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProcessorsController : ControllerBase
+    public class GraphicsController : ControllerBase
     {
-        private readonly IProcessorService service;
-        private readonly ILogger<ProcessorsController> logger;
+        private readonly IGraphicsService service;
+        private readonly ILogger<GraphicsController> logger;
 
-        public ProcessorsController(IProcessorService service, ILogger<ProcessorsController> logger)
+        public GraphicsController(IGraphicsService service, ILogger<GraphicsController> logger)
         {
             this.service = service ?? throw new ArgumentNullException(nameof(service));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         [HttpGet]
-        public async Task<ActionResult<ResultObject<IEnumerable<ProcessorResponse>>>> GetAll(
+        public async Task<ActionResult<ResultObject<IEnumerable<GraphicsResponse>>>> GetAll(
             [FromQuery] Pagination pagination,
             [FromBody] SearchOptions options)
         {
@@ -33,7 +33,7 @@ namespace ComputerBuildService.Server.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ResultObject<ProcessorResponse>>> Get(int id)
+        public async Task<ActionResult<ResultObject<GraphicsResponse>>> Get(int id)
         {
             var response = await service.Get(id);
 
@@ -41,8 +41,8 @@ namespace ComputerBuildService.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ResultObject<ProcessorResponse>>> Add(
-            [FromBody] ProcessorRequest requestModel)
+        public async Task<ActionResult<ResultObject<GraphicsResponse>>> Add(
+            [FromBody] GraphicsRequest requestModel)
         {
             var response = await service.Create(requestModel);
 
@@ -50,8 +50,8 @@ namespace ComputerBuildService.Server.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<ResultObject<ProcessorResponse>>> Update(
-            [FromBody] ProcessorRequest requestModel)
+        public async Task<ActionResult<ResultObject<GraphicsResponse>>> Update(
+            [FromBody] GraphicsRequest requestModel)
         {
             var result = await service.Update(requestModel);
 
@@ -59,7 +59,7 @@ namespace ComputerBuildService.Server.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<ResultObject<ProcessorResponse>>> Delete(int id)
+        public async Task<ActionResult<ResultObject<GraphicsResponse>>> Delete(int id)
         {
             var result = await service.Delete(id);
 

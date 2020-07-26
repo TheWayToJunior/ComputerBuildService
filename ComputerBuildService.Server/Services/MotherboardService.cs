@@ -24,7 +24,7 @@ namespace ComputerBuildService.Server.Services
 
         public async Task<ResultObject<IEnumerable<MotherboardResponse>>> GetAll(Pagination pagination, SearchOptions options)
         {
-            async Task<Motherboard[]> WrappedFunc(Pagination pagin, SearchOptions opt)
+            async Task<Motherboard[]> WrappedGetAll(Pagination pagin, SearchOptions opt)
             {
                 return await repository
                     .GetAll<Motherboard, int>()
@@ -35,12 +35,12 @@ namespace ComputerBuildService.Server.Services
                     .ToArrayAsync();
             }
 
-            return await service.InvolucreGetAll<MotherboardResponse>(WrappedFunc, pagination, options);
+            return await service.InvolucreGetAll<MotherboardResponse>(WrappedGetAll, pagination, options);
         }
 
         public async Task<ResultObject<MotherboardResponse>> Get(int objectId)
         {
-            async Task<Motherboard> WrappedFunc(int id)
+            async Task<Motherboard> WrappedGet(int id)
             {
                 return await repository
                     .Get<Motherboard, int>(id)
@@ -49,7 +49,7 @@ namespace ComputerBuildService.Server.Services
                     .FirstOrDefaultAsync(m => m.Id == id);
             }
 
-            return await service.InvolucreGet<MotherboardResponse>(WrappedFunc, objectId);
+            return await service.InvolucreGet<MotherboardResponse>(WrappedGet, objectId);
         }
 
         public async Task<ResultObject<MotherboardResponse>> Create(MotherboardRequest request)

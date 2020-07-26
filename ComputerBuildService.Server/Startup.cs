@@ -46,6 +46,7 @@ namespace ComputerBuildService.Server
 
             services.AddScoped<IProcessorService, ProcessorService>();
             services.AddScoped<IMotherboardService, MotherboardService>();
+            services.AddScoped<IGraphicsService, GraphicsService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

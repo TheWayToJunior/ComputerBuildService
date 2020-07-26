@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ComputerBuildService.Server.Contract.Services
 {
-    public interface IGraphicsService
+    public interface IGraphicsCardService
     {
         Task<ResultObject<IEnumerable<GraphicsResponse>>> GetAll(Pagination pagination, SearchOptions options);
 

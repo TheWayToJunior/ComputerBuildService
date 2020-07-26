@@ -11,12 +11,12 @@ using System.Threading.Tasks;
 
 namespace ComputerBuildService.Server.Services
 {
-    public class GraphicsService : IGraphicsService
+    public class GraphicsCardService : IGraphicsCardService
     {
         private readonly IService<GraphicsCard, int> service;
         private readonly IRepository repository;
 
-        public GraphicsService(IService<GraphicsCard, int> service, IRepository repository)
+        public GraphicsCardService(IService<GraphicsCard, int> service, IRepository repository)
         {
             this.service = service ?? throw new ArgumentNullException(nameof(service));
             this.repository = repository ?? throw new ArgumentNullException(nameof(repository));

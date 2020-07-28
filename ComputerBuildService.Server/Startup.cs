@@ -1,9 +1,7 @@
 using AutoMapper;
 using ComputerBuildService.Server.Contract.Data;
-using ComputerBuildService.Server.Contract.Services;
 using ComputerBuildService.Server.Data;
 using ComputerBuildService.Server.Profiles;
-using ComputerBuildService.Server.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +24,8 @@ namespace ComputerBuildService.Server
         {
             services.AddDbContext<ApplicationDbContext>(opt =>
             {
-                opt.UseSqlServer(configuration.GetConnectionString("ApplicationDbContext"));
+                opt.UseSqlServer(configuration.GetConnectionString("ApplicationDbContext"), 
+                    assembly => assembly.MigrationsAssembly("ComputerBuildService.DAL"));
             });
 
             services.AddControllers().AddNewtonsoftJson(options =>
@@ -42,14 +41,7 @@ namespace ComputerBuildService.Server
             services.AddSingleton(mapper);
 
             services.AddScoped<IRepository, Repository>();
-            services.AddScoped(typeof(IService<,>), typeof(GenericService<,>));
-
-            services.AddScoped<IProcessorService, ProcessorService>();
-            services.AddScoped<IMotherboardService, MotherboardService>();
-
-            services.AddScoped<IGraphicsCardService, GraphicsCardService>();
-            services.AddScoped<ICpuCoolerService, CpuCoolerService>();
-            services.AddScoped<IMemoryService, MemoryService>();
+            //services.AddScoped(typeof(IService<,>), typeof(GenericService<,>));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

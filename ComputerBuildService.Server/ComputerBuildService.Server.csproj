@@ -19,8 +19,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ComputerBuildService.Server.Contract\ComputerBuildService.Server.Contract.csproj" />
-    <ProjectReference Include="..\ComputerBuildService.Shared\ComputerBuildService.Server.ViewModel.csproj" />
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ComputerBuildService.BL\ComputerBuildService.BL.csproj" />
+    <ProjectReference Include="..\ComputerBuildService.DAL\ComputerBuildService.DAL.csproj" />
   </ItemGroup>
 
 

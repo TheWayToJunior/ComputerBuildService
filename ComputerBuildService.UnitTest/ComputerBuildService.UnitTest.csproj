@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ComputerBuildService.Server\ComputerBuildService.Server.csproj" />
-    <ProjectReference Include="..\ComputerBuildService.Shared\ComputerBuildService.Server.ViewModel.csproj" />
   </ItemGroup>
 
 </Project>

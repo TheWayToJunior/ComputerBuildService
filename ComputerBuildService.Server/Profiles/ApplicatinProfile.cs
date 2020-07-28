@@ -75,6 +75,17 @@ namespace ComputerBuildService.Server.Profiles
 
             #endregion
 
+            #region RandomAccessMemory entity Mapping
+
+            /// Response
+            CreateMap<RandomAccessMemory, MemoryResponse>();
+            CreateMap<MemoryResponse, RandomAccessMemory>();
+
+            /// Request
+            CreateMap<RandomAccessMemory, MemoryRequest>();
+            CreateMap<MemoryRequest, RandomAccessMemory>();
+
+            #endregion
         }
     }
 }

@@ -21,7 +21,7 @@ namespace ComputerBuildService.DAL.Repositorys
         {
             return await GetAll().Result
                 .Include(p => p.PropertysItems).ThenInclude(pi => pi.Item)
-                .SingleAsync(entity => entity.PropertyName.ToLower() == name.ToLower()
+                .SingleOrDefaultAsync(entity => entity.PropertyName.ToLower() == name.ToLower()
                     && entity.PropertyType.ToLower() == type.ToLower());
         }
 
@@ -34,7 +34,7 @@ namespace ComputerBuildService.DAL.Repositorys
                 var entity = await GetByName(item.type, item.name);
 
                 if (entity == null)
-                    throw new InvalidOperationException($"The specified parameter was not found: {item.type}, {item.name}");
+                    throw new Exception($"The specified parameter was not found: {item.type}, {item.name}");
 
                 list.Add(entity);
             }

@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
+using ComputerBuildService.BL.Helpers;
 using ComputerBuildService.BL.IServices;
 using ComputerBuildService.BL.Models;
+using ComputerBuildService.BL.Models.Requests;
 using ComputerBuildService.DAL.Entitys;
 using ComputerBuildService.DAL.IRepositorys;
-using ComputerBuildService.Server.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,21 @@ namespace ComputerBuildService.BL.Services
             return entitys.Where(item => item.HardwareType.Id == entityType.Id);
         }
 
+        private async Task<IEnumerable<HardwareItemEntity>> SelectHardware(
+            IQueryable<HardwareItemEntity> entities,
+            IEnumerable<CompatibilityPropertyRequest> propertyResponses)
+        {
+            if (!propertyResponses?.Any() ?? true)
+                return entities.AsEnumerable();
+
+            var propentieEntities = await container.CompatibilityPropertyRepository
+                    .GetByName(propertyResponses.Select(e => (e.PropertyType, e.PropertyName)));
+
+            return entities
+                    .AsEnumerable()
+                    .Where(e => !propentieEntities.Except(e.PropertysItems.Select(pi => pi.Property)).Any());
+        }
+
         public async Task<ResultObject<IEnumerable<HardwareItemResponse>>> GetHardwareItem(
             Pagination pagination,
             SelectingHardware selecting)
@@ -44,14 +60,9 @@ namespace ComputerBuildService.BL.Services
 
             try
             {
-                var propentieEntities = await container.CompatibilityPropertyRepository
-                    .GetByName(selecting.СompatibilityProperties.Select(e => (e.PropertyType, e.PropertyName)));
-
                 var entities = await GetHardwareItemByType(selecting.Type);
 
-                takeEntities = entities
-                    .AsEnumerable()
-                    .Where(e => !propentieEntities.Except(e.PropertysItems.Select(pi => pi.Property)).Any())
+                takeEntities = (await SelectHardware(entities, selecting.СompatibilityProperties))
                     .Pagination(pagination)
                     .ToArray();
             }

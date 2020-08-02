@@ -1,6 +1,8 @@
 using AutoMapper;
-using ComputerBuildService.Server.Contract.Data;
-using ComputerBuildService.Server.Data;
+using ComputerBuildService.BL.Services;
+using ComputerBuildService.DAL.Data;
+using ComputerBuildService.DAL.IRepositorys;
+using ComputerBuildService.DAL.Repositorys;
 using ComputerBuildService.Server.Profiles;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -24,7 +26,7 @@ namespace ComputerBuildService.Server
         {
             services.AddDbContext<ApplicationDbContext>(opt =>
             {
-                opt.UseSqlServer(configuration.GetConnectionString("ApplicationDbContext"), 
+                opt.UseSqlServer(configuration.GetConnectionString("ApplicationDbContext"),
                     assembly => assembly.MigrationsAssembly("ComputerBuildService.DAL"));
             });
 
@@ -40,8 +42,9 @@ namespace ComputerBuildService.Server
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
 
-            services.AddScoped<IRepository, Repository>();
+            services.AddScoped<IRepositoryContainer, RepositoryContainer>();
             //services.AddScoped(typeof(IService<,>), typeof(GenericService<,>));
+            services.AddScoped<HardwareItemService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

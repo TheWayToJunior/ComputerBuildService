@@ -1,7 +1,7 @@
 ﻿using ComputerBuildService.DAL.Entitys;
 using Microsoft.EntityFrameworkCore;
 
-namespace ComputerBuildService.Server.Data
+namespace ComputerBuildService.DAL.Data
 {
     public class ApplicationDbContext : DbContext
     {

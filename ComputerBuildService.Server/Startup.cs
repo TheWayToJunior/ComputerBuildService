@@ -1,4 +1,5 @@
 using AutoMapper;
+using ComputerBuildService.BL.IServices;
 using ComputerBuildService.BL.Services;
 using ComputerBuildService.DAL.Data;
 using ComputerBuildService.DAL.IRepositorys;
@@ -44,7 +45,7 @@ namespace ComputerBuildService.Server
 
             services.AddScoped<IRepositoryContainer, RepositoryContainer>();
             //services.AddScoped(typeof(IService<,>), typeof(GenericService<,>));
-            services.AddScoped<HardwareItemService>();
+            services.AddScoped<IHardwareItemService, HardwareItemService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

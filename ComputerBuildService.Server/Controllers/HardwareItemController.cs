@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ComputerBuildService.BL.IServices;
 using ComputerBuildService.BL.Models;
-using ComputerBuildService.BL.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace ComputerBuildService.Server.Controllers
 {
@@ -13,16 +9,16 @@ namespace ComputerBuildService.Server.Controllers
     [ApiController]
     public class HardwareItemController : ControllerBase
     {
-        private readonly HardwareItemService service;
+        private readonly IHardwareItemService service;
 
-        public HardwareItemController(HardwareItemService service)
+        public HardwareItemController(IHardwareItemService service)
         {
             this.service = service;
         }
 
         [HttpGet]
         public async Task<ActionResult<ResultObject<HardwareItemResponse>>> GetAll(
-            [FromQuery] Pagination pagination, 
+            [FromQuery] Pagination pagination,
             [FromBody] SelectingHardware selecting)
         {
             var result = await service.GetHardwareItem(pagination, selecting);

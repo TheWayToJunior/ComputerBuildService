@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ComputerBuildService.BL.IServices;
 using ComputerBuildService.BL.Models;
 using ComputerBuildService.DAL.Entitys;
 using ComputerBuildService.DAL.IRepositorys;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ComputerBuildService.BL.Services
 {
-    public class HardwareItemService
+    public class HardwareItemService : IHardwareItemService
     {
         private readonly IRepositoryContainer container;
         private readonly IMapper mapper;

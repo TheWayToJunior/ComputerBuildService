@@ -1,6 +1,6 @@
 ﻿using ComputerBuildService.BL.Models;
 using ComputerBuildService.BL.Models.Requests;
-using ComputerBuildService.DAL.Entitys;
+using ComputerBuildService.DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

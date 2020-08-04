@@ -3,14 +3,16 @@ using ComputerBuildService.DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ComputerBuildService.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200804113325_Renamed TypeName in Name")]
+    partial class RenamedTypeNameinName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -18,7 +20,7 @@ namespace ComputerBuildService.DAL.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("ComputerBuildService.DAL.Entities.CompatibilityPropertyEntity", b =>
+            modelBuilder.Entity("ComputerBuildService.DAL.Entitys.CompatibilityPropertyEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -35,14 +37,14 @@ namespace ComputerBuildService.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PropertyName", "PropertyType")
+                    b.HasIndex("PropertyName")
                         .IsUnique()
-                        .HasFilter("[PropertyName] IS NOT NULL AND [PropertyType] IS NOT NULL");
+                        .HasFilter("[PropertyName] IS NOT NULL");
 
                     b.ToTable("CompatibleProperties");
                 });
 
-            modelBuilder.Entity("ComputerBuildService.DAL.Entities.CompatibilityPropertyHardwareItem", b =>
+            modelBuilder.Entity("ComputerBuildService.DAL.Entitys.CompatibilityPropertyHardwareItem", b =>
                 {
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
@@ -57,7 +59,7 @@ namespace ComputerBuildService.DAL.Migrations
                     b.ToTable("CompatibilityPropertyHardwareItem");
                 });
 
-            modelBuilder.Entity("ComputerBuildService.DAL.Entities.HardwareItemEntity", b =>
+            modelBuilder.Entity("ComputerBuildService.DAL.Entitys.HardwareItemEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -94,7 +96,7 @@ namespace ComputerBuildService.DAL.Migrations
                     b.ToTable("HardwareItems");
                 });
 
-            modelBuilder.Entity("ComputerBuildService.DAL.Entities.HardwareTypeEntity", b =>
+            modelBuilder.Entity("ComputerBuildService.DAL.Entitys.HardwareTypeEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -113,7 +115,7 @@ namespace ComputerBuildService.DAL.Migrations
                     b.ToTable("HardwareTypes");
                 });
 
-            modelBuilder.Entity("ComputerBuildService.DAL.Entities.ManufacturerEntity", b =>
+            modelBuilder.Entity("ComputerBuildService.DAL.Entitys.ManufacturerEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -132,30 +134,30 @@ namespace ComputerBuildService.DAL.Migrations
                     b.ToTable("Manufacturers");
                 });
 
-            modelBuilder.Entity("ComputerBuildService.DAL.Entities.CompatibilityPropertyHardwareItem", b =>
+            modelBuilder.Entity("ComputerBuildService.DAL.Entitys.CompatibilityPropertyHardwareItem", b =>
                 {
-                    b.HasOne("ComputerBuildService.DAL.Entities.HardwareItemEntity", "Item")
+                    b.HasOne("ComputerBuildService.DAL.Entitys.HardwareItemEntity", "Item")
                         .WithMany("PropertysItems")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ComputerBuildService.DAL.Entities.CompatibilityPropertyEntity", "Property")
+                    b.HasOne("ComputerBuildService.DAL.Entitys.CompatibilityPropertyEntity", "Property")
                         .WithMany("PropertysItems")
                         .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ComputerBuildService.DAL.Entities.HardwareItemEntity", b =>
+            modelBuilder.Entity("ComputerBuildService.DAL.Entitys.HardwareItemEntity", b =>
                 {
-                    b.HasOne("ComputerBuildService.DAL.Entities.HardwareTypeEntity", "HardwareType")
+                    b.HasOne("ComputerBuildService.DAL.Entitys.HardwareTypeEntity", "HardwareType")
                         .WithMany("HardwareItems")
                         .HasForeignKey("HardwareTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ComputerBuildService.DAL.Entities.ManufacturerEntity", "Manufacturer")
+                    b.HasOne("ComputerBuildService.DAL.Entitys.ManufacturerEntity", "Manufacturer")
                         .WithMany("HardwareItems")
                         .HasForeignKey("ManufacturerId")
                         .OnDelete(DeleteBehavior.Cascade)

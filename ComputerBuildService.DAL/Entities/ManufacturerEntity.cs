@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace ComputerBuildService.DAL.Entitys
+namespace ComputerBuildService.DAL.Entities
 {
-    public class HardwareTypeEntity : IEntity<int>
+    public class ManufacturerEntity : IUniqueEntity<int>
     {
         [Key]
         public int Id { get; set; }
 
-        public string TypeName { get; set; }
+        public string Name { get; set; }
 
         public ICollection<HardwareItemEntity> HardwareItems { get; set; }
     }

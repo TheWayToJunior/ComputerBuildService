@@ -1,10 +1,10 @@
-﻿using ComputerBuildService.DAL.Entitys;
+﻿using ComputerBuildService.DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ComputerBuildService.DAL.IRepositorys
+namespace ComputerBuildService.DAL.IRepositories
 {
     public interface ICompatibilityPropertyRepository : IRepository<CompatibilityPropertyEntity, int>
     {

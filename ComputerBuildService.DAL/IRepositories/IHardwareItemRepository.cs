@@ -1,8 +1,8 @@
-﻿using ComputerBuildService.DAL.Entitys;
+﻿using ComputerBuildService.DAL.Entities;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ComputerBuildService.DAL.IRepositorys
+namespace ComputerBuildService.DAL.IRepositories
 {
     public interface IHardwareItemRepository : IRepository<HardwareItemEntity, int>
     {

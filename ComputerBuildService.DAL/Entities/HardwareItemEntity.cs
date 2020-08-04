@@ -2,9 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ComputerBuildService.DAL.Entitys
+namespace ComputerBuildService.DAL.Entities
 {
-    public class HardwareItemEntity : IEntity<int>
+    public class HardwareItemEntity : IUniqueEntity<int>
     {
         [Key]
         public int Id { get; set; }

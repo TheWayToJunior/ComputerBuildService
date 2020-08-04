@@ -1,13 +1,12 @@
 ﻿using ComputerBuildService.DAL.Data;
-using ComputerBuildService.DAL.Entitys;
-using ComputerBuildService.DAL.IRepositorys;
-using ComputerBuildService.DAL.Repository;
+using ComputerBuildService.DAL.Entities;
+using ComputerBuildService.DAL.IRepositories;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ComputerBuildService.DAL.Repositorys
+namespace ComputerBuildService.DAL.Repositories
 {
     public class CompatibilityPropertyRepository : Repository<CompatibilityPropertyEntity, int>, ICompatibilityPropertyRepository
     {

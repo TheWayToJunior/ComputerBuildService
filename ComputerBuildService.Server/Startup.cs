@@ -2,8 +2,8 @@ using AutoMapper;
 using ComputerBuildService.BL.IServices;
 using ComputerBuildService.BL.Services;
 using ComputerBuildService.DAL.Data;
-using ComputerBuildService.DAL.IRepositorys;
-using ComputerBuildService.DAL.Repositorys;
+using ComputerBuildService.DAL.IRepositories;
+using ComputerBuildService.DAL.Repositories;
 using ComputerBuildService.Server.Profiles;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -43,8 +43,9 @@ namespace ComputerBuildService.Server
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
 
-            services.AddScoped<IRepositoryContainer, RepositoryContainer>();
             //services.AddScoped(typeof(IService<,>), typeof(GenericService<,>));
+
+            services.AddScoped<IRepositoryContainer, RepositoryContainer>();
             services.AddScoped<IHardwareItemService, HardwareItemService>();
         }
 

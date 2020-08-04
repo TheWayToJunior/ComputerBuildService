@@ -1,4 +1,5 @@
 ﻿using ComputerBuildService.BL.Models;
+using ComputerBuildService.BL.Models.Requests;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,5 +12,8 @@ namespace ComputerBuildService.BL.IServices
         Task<ResultObject<IEnumerable<HardwareItemResponse>>> GetHardwareItem(
             Pagination pagination,
             SelectingHardware selecting);
+
+        Task<ResultObject<HardwareItemResponse>> AddHardwareItem(
+            HardwareItemRequest request);
     }
 }

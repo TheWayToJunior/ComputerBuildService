@@ -1,4 +1,4 @@
-﻿using ComputerBuildService.DAL.Entitys;
+﻿using ComputerBuildService.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace ComputerBuildService.DAL.Data
@@ -19,8 +19,8 @@ namespace ComputerBuildService.DAL.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<CompatibilityPropertyEntity>().HasIndex(n => n.PropertyName).IsUnique();
-            modelBuilder.Entity<HardwareTypeEntity>().HasIndex(n => n.TypeName).IsUnique();
+            modelBuilder.Entity<CompatibilityPropertyEntity>().HasIndex(n => new { n.PropertyName, n.PropertyType }).IsUnique();
+            modelBuilder.Entity<HardwareTypeEntity>().HasIndex(n => n.Name).IsUnique();
             modelBuilder.Entity<HardwareItemEntity>().HasIndex(n => n.Name).IsUnique();
             modelBuilder.Entity<ManufacturerEntity>().HasIndex(n => n.Name).IsUnique();
 

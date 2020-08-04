@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ComputerBuildService.DAL.IRepositorys
+namespace ComputerBuildService.DAL.IRepositories
 {
     public interface IRepositoryContainer : IDisposable
     {
@@ -12,6 +12,8 @@ namespace ComputerBuildService.DAL.IRepositorys
         IHardwareTypeRepository HardwareTypeRepository { get; }
 
         ICompatibilityPropertyRepository CompatibilityPropertyRepository { get; }
+
+        IManufacturerRepository ManufacturerRepository { get; }
 
         int Save();
 

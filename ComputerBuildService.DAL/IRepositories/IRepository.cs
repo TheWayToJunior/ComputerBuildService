@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ComputerBuildService.DAL.IRepositorys
+namespace ComputerBuildService.DAL.IRepositories
 {
     public interface IRepository<TEntity, TKey>
          where TEntity : class, IEntity<TKey>

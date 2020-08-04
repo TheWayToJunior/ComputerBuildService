@@ -1,4 +1,4 @@
-﻿namespace ComputerBuildService.DAL.Entitys
+﻿namespace ComputerBuildService.DAL.Entities
 {
     public class CompatibilityPropertyHardwareItem
     {

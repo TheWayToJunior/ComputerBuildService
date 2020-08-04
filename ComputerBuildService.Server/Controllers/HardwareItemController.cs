@@ -1,5 +1,6 @@
 ﻿using ComputerBuildService.BL.IServices;
 using ComputerBuildService.BL.Models;
+using ComputerBuildService.BL.Models.Requests;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -22,6 +23,14 @@ namespace ComputerBuildService.Server.Controllers
             [FromBody] SelectingHardware selecting)
         {
             var result = await service.GetHardwareItem(pagination, selecting);
+
+            return Ok(result);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<ResultObject<HardwareItemResponse>>> Add([FromBody] HardwareItemRequest request)
+        {
+            var result = await service.AddHardwareItem(request);
 
             return Ok(result);
         }

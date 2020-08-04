@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace ComputerBuildService.DAL.Entitys
+namespace ComputerBuildService.DAL.Entities
 {
     public class CompatibilityPropertyEntity : IEntity<int>
     {

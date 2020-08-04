@@ -1,11 +1,11 @@
-﻿using ComputerBuildService.DAL.IRepositorys;
+﻿using ComputerBuildService.DAL.IRepositories;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ComputerBuildService.DAL.Repository
+namespace ComputerBuildService.DAL.Repositories
 {
     public class Repository<TEntity, TKey> : IRepository<TEntity, TKey>
         where TEntity : class, IEntity<TKey>

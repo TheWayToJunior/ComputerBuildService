@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using ComputerBuildService.BL.Models;
 using ComputerBuildService.BL.Models.Requests;
-using ComputerBuildService.DAL.Entitys;
+using ComputerBuildService.DAL.Entities;
 using System.Linq;
 
 namespace ComputerBuildService.Server.Profiles
@@ -18,7 +18,12 @@ namespace ComputerBuildService.Server.Profiles
                  .ForMember(model => model.Manufacturer, opt => opt
                     .MapFrom(entity => entity.Manufacturer.Name))
                  .ForMember(model => model.HardwareType, opt => opt
-                    .MapFrom(entity => entity.HardwareType.TypeName));
+                    .MapFrom(entity => entity.HardwareType.Name));
+
+            CreateMap<HardwareItemRequest, HardwareItemEntity>()
+                .ForMember(entity => entity.HardwareType, opt => opt.Ignore())
+                .ForMember(entity => entity.Manufacturer, opt => opt.Ignore())
+                .ForMember(entity => entity.PropertysItems, opt => opt.Ignore());
 
             CreateMap<CompatibilityPropertyEntity, CompatibilityPropertyResponse>();
             CreateMap<CompatibilityPropertyRequest, CompatibilityPropertyEntity>();

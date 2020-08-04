@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace ComputerBuildService.DAL.Entitys
+namespace ComputerBuildService.DAL.Entities
 {
-    public class ManufacturerEntity : IEntity<int>
+    public class HardwareTypeEntity : IUniqueEntity<int>
     {
         [Key]
         public int Id { get; set; }

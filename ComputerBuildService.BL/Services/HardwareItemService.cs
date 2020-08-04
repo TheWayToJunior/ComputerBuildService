@@ -3,8 +3,8 @@ using ComputerBuildService.BL.Helpers;
 using ComputerBuildService.BL.IServices;
 using ComputerBuildService.BL.Models;
 using ComputerBuildService.BL.Models.Requests;
-using ComputerBuildService.DAL.Entitys;
-using ComputerBuildService.DAL.IRepositorys;
+using ComputerBuildService.DAL.Entities;
+using ComputerBuildService.DAL.IRepositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +21,38 @@ namespace ComputerBuildService.BL.Services
         {
             this.container = container ?? throw new ArgumentNullException(nameof(container));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+        }
+
+        /// <summary>
+        /// Возвращает необходимую коллекцию компьютерных деталей
+        /// </summary>
+        /// <param name="pagination">Параметры постраничной навигации</param>
+        /// <param name="selecting">Параметры выбора деталей</param>
+        /// <returns></returns>
+        public async Task<ResultObject<IEnumerable<HardwareItemResponse>>> GetHardwareItem(
+            Pagination pagination,
+            SelectingHardware selecting)
+        {
+            var result = ResultObject<IEnumerable<HardwareItemResponse>>.Create();
+
+            IEnumerable<HardwareItemEntity> takeEntities = null;
+
+            try
+            {
+                var entities = await GetHardwareItemByType(selecting.Type);
+
+                takeEntities = (await SelectHardware(entities, selecting.СompatibilityProperties))
+                    .Pagination(pagination)
+                    .ToArray();
+            }
+            catch (Exception ex)
+            {
+                return result.AddError(ex);
+            }
+
+            var response = mapper.Map<HardwareItemResponse[]>(takeEntities);
+
+            return result.SetValue(response);
         }
 
         private async Task<IQueryable<HardwareItemEntity>> GetHardwareItemByType(string hardwareType)
@@ -50,30 +82,89 @@ namespace ComputerBuildService.BL.Services
                     .Where(e => !propentieEntities.Except(e.PropertysItems.Select(pi => pi.Property)).Any());
         }
 
-        public async Task<ResultObject<IEnumerable<HardwareItemResponse>>> GetHardwareItem(
-            Pagination pagination,
-            SelectingHardware selecting)
+        /// <summary>
+        /// Добавляет новую деталь в базу, в случае если изготовитель или тип детали отсутствует в базе,
+        /// он будет добавлен автоматически
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public async Task<ResultObject<HardwareItemResponse>> AddHardwareItem(HardwareItemRequest request)
         {
-            var result = ResultObject<IEnumerable<HardwareItemResponse>>.Create();
+            var result = ResultObject<HardwareItemResponse>.Create();
 
-            IEnumerable<HardwareItemEntity> takeEntities = null;
+            var mapEntity = mapper.Map<HardwareItemEntity>(request);
+
+            HardwareItemEntity entity = null;
 
             try
             {
-                var entities = await GetHardwareItemByType(selecting.Type);
+                await MapPropertyRequest(mapEntity, request.PropertysItems);
 
-                takeEntities = (await SelectHardware(entities, selecting.СompatibilityProperties))
-                    .Pagination(pagination)
-                    .ToArray();
+                var manufacturerEntity = await GetOrCreateEntity(container.ManufacturerRepository, request.Manufacturer);
+                mapEntity.ManufacturerId = manufacturerEntity.Id;
+
+                var hardwareTypeEntity = await GetOrCreateEntity(container.HardwareTypeRepository, request.HardwareType);
+                mapEntity.HardwareTypeId = hardwareTypeEntity.Id;
+
+                entity = await container.HardwareItemRepository.AddAsync(mapEntity);
+                await container.SaveAsync();
             }
             catch (Exception ex)
             {
                 return result.AddError(ex);
             }
 
-            var response = mapper.Map<HardwareItemResponse[]>(takeEntities);
+            var response = mapper.Map<HardwareItemResponse>(entity);
 
             return result.SetValue(response);
+        }
+
+        private async Task<TModel> GetOrCreateEntity<TModel, TKey>(IRepository<TModel, TKey> repository, string name)
+            where TModel : class, IUniqueEntity<TKey>, new()
+        {
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentNullException(nameof(name));
+
+            var entity = await (repository as ISearcher<TModel>).GetByName(name);
+
+            if (entity != null)
+                return entity;
+
+            entity = await repository.AddAsync(new TModel { Name = name });
+            await container.SaveAsync();
+
+            return entity;
+        }
+
+        /// <summary>
+        /// Проверяет существует ли property, в случае если в базе нет данного объекта создает новый
+        /// и устанавливает необходимые связи
+        /// </summary>
+        private async Task MapPropertyRequest(HardwareItemEntity entity, IEnumerable<CompatibilityPropertyRequest> properties)
+        {
+            var list = new List<CompatibilityPropertyHardwareItem>();
+
+            foreach (var item in properties)
+            {
+                var propertyEntity = await container.CompatibilityPropertyRepository.GetByName(item.PropertyType, item.PropertyName);
+
+                if (propertyEntity == null)
+                {
+                    propertyEntity = await container.CompatibilityPropertyRepository.AddAsync(new CompatibilityPropertyEntity 
+                    {
+                        PropertyName = item.PropertyName,
+                        PropertyType = item.PropertyType
+                    });
+                }
+
+                list.Add(new CompatibilityPropertyHardwareItem
+                {
+                    Item = entity,
+                    Property = propertyEntity
+                });
+            }
+
+            entity.PropertysItems = list;
         }
     }
 }

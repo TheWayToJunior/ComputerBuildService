@@ -1,10 +1,9 @@
 ﻿using ComputerBuildService.DAL.Data;
-using ComputerBuildService.DAL.IRepositorys;
-using ComputerBuildService.DAL.Repository;
+using ComputerBuildService.DAL.IRepositories;
 using System;
 using System.Threading.Tasks;
 
-namespace ComputerBuildService.DAL.Repositorys
+namespace ComputerBuildService.DAL.Repositories
 {
     public class RepositoryContainer : IRepositoryContainer
     {
@@ -17,6 +16,7 @@ namespace ComputerBuildService.DAL.Repositorys
             HardwareItemRepository = new HardwareItemRepository(this.context);
             HardwareTypeRepository = new HardwareTypeRepository(this.context);
             CompatibilityPropertyRepository = new CompatibilityPropertyRepository(this.context);
+            ManufacturerRepository = new ManufacturerRepository(this.context);
         }
 
         public IHardwareItemRepository HardwareItemRepository { get; private set; }
@@ -24,6 +24,8 @@ namespace ComputerBuildService.DAL.Repositorys
         public IHardwareTypeRepository HardwareTypeRepository { get; private set; }
 
         public ICompatibilityPropertyRepository CompatibilityPropertyRepository { get; private set; }
+
+        public IManufacturerRepository ManufacturerRepository { get; private set; }
 
         public int Save()
         {

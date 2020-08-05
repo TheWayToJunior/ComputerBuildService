@@ -119,6 +119,45 @@ namespace ComputerBuildService.BL.Services
             return result.SetValue(response);
         }
 
+        /// <summary>
+        /// Изменяет данные указанного объекта
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public async Task<ResultObject<HardwareItemResponse>> UpdateHardwareItem(HardwareItemRequest request)
+        {
+            var result = ResultObject<HardwareItemResponse>.Create();
+
+            var entity = await container.HardwareItemRepository.GetFullObject(request.Id);
+
+            if (entity == null)
+                return result.AddError(new Exception($"The specified object could not be found: Id = {request.Id}"));
+
+            try
+            {
+                /// Мапит в entity, игнорируя связи, новый объект который мы получили
+                mapper.Map(request, entity);
+
+                /// Удаляет старые связи детали к характеристикам
+                entity.PropertysItems.Clear();
+                await MapPropertyRequest(entity, request.PropertysItems);
+
+                var manufacturerEntity = await GetOrCreateEntity(container.ManufacturerRepository, request.Manufacturer);
+                entity.ManufacturerId = manufacturerEntity.Id;
+
+                var hardwareTypeEntity = await GetOrCreateEntity(container.HardwareTypeRepository, request.HardwareType);
+                entity.HardwareTypeId = hardwareTypeEntity.Id;
+
+                await container.SaveAsync();
+            }
+            catch (Exception ex)
+            {
+                return result.AddError(ex);
+            }
+
+            return result.SetValue(null);
+        }
+
         private async Task<TModel> GetOrCreateEntity<TModel, TKey>(IRepository<TModel, TKey> repository, string name)
             where TModel : class, IUniqueEntity<TKey>, new()
         {
@@ -137,12 +176,12 @@ namespace ComputerBuildService.BL.Services
         }
 
         /// <summary>
-        /// Проверяет существует ли property, в случае если в базе нет данного объекта создает новый
+        /// Проверяет существует ли properties, в случае если в базе нет данного объекта создает новый
         /// и устанавливает необходимые связи
         /// </summary>
         private async Task MapPropertyRequest(HardwareItemEntity entity, IEnumerable<CompatibilityPropertyRequest> properties)
         {
-            var list = new List<CompatibilityPropertyHardwareItem>();
+            var propertysItems = new List<CompatibilityPropertyHardwareItem>();
 
             foreach (var item in properties)
             {
@@ -157,14 +196,14 @@ namespace ComputerBuildService.BL.Services
                     });
                 }
 
-                list.Add(new CompatibilityPropertyHardwareItem
+                propertysItems.Add(new CompatibilityPropertyHardwareItem
                 {
                     Item = entity,
                     Property = propertyEntity
                 });
             }
 
-            entity.PropertysItems = list;
+            entity.PropertysItems = propertysItems;
         }
     }
 }

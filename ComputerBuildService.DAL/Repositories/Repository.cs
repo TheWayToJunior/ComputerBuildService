@@ -37,9 +37,9 @@ namespace ComputerBuildService.DAL.Repositories
             await Context.Set<TEntity>().AddRangeAsync(entity);
         }
 
-        public void Update(TEntity entity)
+        public async Task Update(TEntity entity)
         {
-            Context.Entry(entity).State = EntityState.Modified;
+            await Task.Run(() => Context.Set<TEntity>().Update(entity));
         }
 
         public async Task RemoveAsync(TEntity entity)

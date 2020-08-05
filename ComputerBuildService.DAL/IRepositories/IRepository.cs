@@ -15,7 +15,7 @@ namespace ComputerBuildService.DAL.IRepositories
 
         Task AddRangeAsync(IEnumerable<TEntity> entity);
 
-        void Update(TEntity entity);
+        Task Update(TEntity entity);
 
         Task RemoveAsync(TEntity entity);
 

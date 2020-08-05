@@ -34,5 +34,13 @@ namespace ComputerBuildService.Server.Controllers
 
             return Ok(result);
         }
+
+        [HttpPut]
+        public async Task<ActionResult<ResultObject<HardwareItemResponse>>> Update([FromBody] HardwareItemRequest request)
+        {
+            var result = await service.UpdateHardwareItem(request);
+
+            return Ok(result);
+        }
     }
 }

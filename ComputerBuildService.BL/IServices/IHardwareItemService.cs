@@ -15,5 +15,8 @@ namespace ComputerBuildService.BL.IServices
 
         Task<ResultObject<HardwareItemResponse>> AddHardwareItem(
             HardwareItemRequest request);
+
+        Task<ResultObject<HardwareItemResponse>> UpdateHardwareItem(
+            HardwareItemRequest request);
     }
 }

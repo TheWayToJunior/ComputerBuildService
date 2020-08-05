@@ -19,7 +19,7 @@ namespace ComputerBuildService.DAL.Repositories
         public async Task<CompatibilityPropertyEntity> GetByName(string type, string name)
         {
             return await GetAll().Result
-                .Include(p => p.PropertysItems).ThenInclude(pi => pi.Item)
+                //.Include(p => p.PropertysItems).ThenInclude(pi => pi.Item)
                 .SingleOrDefaultAsync(entity => entity.PropertyName.ToLower() == name.ToLower()
                     && entity.PropertyType.ToLower() == type.ToLower());
         }

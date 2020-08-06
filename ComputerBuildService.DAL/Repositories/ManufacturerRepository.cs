@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ComputerBuildService.DAL.Repositories
 {
-    public class ManufacturerRepository : Repository<ManufacturerEntity, int>, IManufacturerRepository, ISearcher<ManufacturerEntity>
+    public class ManufacturerRepository : Repository<ManufacturerEntity, int>, IManufacturerRepository, ISearcher<ManufacturerEntity, int>
     {
         public ManufacturerRepository(ApplicationDbContext context) : base(context)
         {
@@ -14,7 +14,7 @@ namespace ComputerBuildService.DAL.Repositories
 
         public ApplicationDbContext ApplicationContext => base.Context as ApplicationDbContext;
 
-        public async Task<ManufacturerEntity> GetByName(string name)
+        public async Task<ManufacturerEntity> SearchByName(string name)
         {
             return await GetAll().Result
                 .SingleOrDefaultAsync(entity => entity.Name.ToLower() == name.ToLower());

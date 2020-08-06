@@ -8,8 +8,8 @@ namespace ComputerBuildService.DAL.IRepositories
 {
     public interface ICompatibilityPropertyRepository : IRepository<CompatibilityPropertyEntity, int>
     {
-        Task<CompatibilityPropertyEntity> GetByName(string type, string name);
+        Task<CompatibilityPropertyEntity> Get(string type, string name);
 
-        Task<IEnumerable<CompatibilityPropertyEntity>> GetByName(IEnumerable<(string type, string name)> props);
+        Task<IEnumerable<CompatibilityPropertyEntity>> Get(IEnumerable<(string type, string name)> props);
     }
 }

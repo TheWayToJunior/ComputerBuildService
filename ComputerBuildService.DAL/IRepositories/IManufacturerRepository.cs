@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ComputerBuildService.DAL.IRepositories
 {
-    public interface IManufacturerRepository : IRepository<ManufacturerEntity, int>, ISearcher<ManufacturerEntity>
+    public interface IManufacturerRepository : IRepository<ManufacturerEntity, int>, ISearcher<ManufacturerEntity, int>
     {
     }
 }

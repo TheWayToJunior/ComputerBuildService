@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ComputerBuildService.DAL.Repositories
 {
-    public class HardwareTypeRepository : Repository<HardwareTypeEntity, int>, IHardwareTypeRepository, ISearcher<HardwareTypeEntity>
+    public class HardwareTypeRepository : Repository<HardwareTypeEntity, int>, IHardwareTypeRepository, ISearcher<HardwareTypeEntity, int>
     {
         public HardwareTypeRepository(ApplicationDbContext context) : base(context)
         {
@@ -14,7 +14,7 @@ namespace ComputerBuildService.DAL.Repositories
 
         public ApplicationDbContext ApplicationContext => base.Context as ApplicationDbContext;
 
-        public async Task<HardwareTypeEntity> GetByName(string typeName)
+        public async Task<HardwareTypeEntity> SearchByName(string typeName)
         {
             return await GetAll().Result
                 .SingleOrDefaultAsync(entity => entity.Name.ToLower() == typeName.ToLower());

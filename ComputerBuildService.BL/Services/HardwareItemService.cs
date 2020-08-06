@@ -57,7 +57,7 @@ namespace ComputerBuildService.BL.Services
 
         private async Task<IQueryable<HardwareItemEntity>> GetHardwareItemByType(string hardwareType)
         {
-            var entityType = await container.HardwareTypeRepository.GetByName(hardwareType);
+            var entityType = await container.HardwareTypeRepository.SearchByName(hardwareType);
 
             if (entityType == null)
                 throw new Exception($"The specified spare part type could not be found: {hardwareType}");
@@ -69,13 +69,13 @@ namespace ComputerBuildService.BL.Services
 
         private async Task<IEnumerable<HardwareItemEntity>> SelectHardware(
             IQueryable<HardwareItemEntity> entities,
-            IEnumerable<CompatibilityPropertyRequest> propertyResponses)
+            IEnumerable<CompatibilityPropertyRequest> propertiesRequests)
         {
-            if (!propertyResponses?.Any() ?? true)
+            if (!propertiesRequests?.Any() ?? true)
                 return entities.AsEnumerable();
 
             var propentieEntities = await container.CompatibilityPropertyRepository
-                    .GetByName(propertyResponses.Select(e => (e.PropertyType, e.PropertyName)));
+                    .Get(propertiesRequests.Select(e => (e.PropertyType, e.PropertyName)));
 
             return entities
                     .AsEnumerable()
@@ -164,7 +164,7 @@ namespace ComputerBuildService.BL.Services
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException(nameof(name));
 
-            var entity = await (repository as ISearcher<TModel>).GetByName(name);
+            var entity = await (repository as ISearcher<TModel, TKey>).SearchByName(name);
 
             if (entity != null)
                 return entity;
@@ -185,7 +185,7 @@ namespace ComputerBuildService.BL.Services
 
             foreach (var item in properties)
             {
-                var propertyEntity = await container.CompatibilityPropertyRepository.GetByName(item.PropertyType, item.PropertyName);
+                var propertyEntity = await container.CompatibilityPropertyRepository.Get(item.PropertyType, item.PropertyName);
 
                 if (propertyEntity == null)
                 {

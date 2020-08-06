@@ -2,8 +2,9 @@
 
 namespace ComputerBuildService.DAL.IRepositories
 {
-    public interface ISearcher<TModel>
+    public interface ISearcher<TModel, TKey>
+        where TModel : IUniqueEntity<TKey>
     {
-        Task<TModel> GetByName(string name);
+        Task<TModel> SearchByName(string name);
     }
 }

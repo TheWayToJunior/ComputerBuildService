@@ -24,7 +24,7 @@ namespace ComputerBuildService.BL.Services
         }
 
         /// <summary>
-        /// Возвращает необходимую коллекцию компьютерных деталей
+        /// Возвращает коллекцию необходимых компьютерных деталей
         /// </summary>
         /// <param name="pagination">Параметры постраничной навигации</param>
         /// <param name="selecting">Параметры выбора деталей</param>
@@ -155,7 +155,7 @@ namespace ComputerBuildService.BL.Services
                 return result.AddError(ex);
             }
 
-            return result.SetValue(null);
+            return result;
         }
 
         private async Task<TModel> GetOrCreateEntity<TModel, TKey>(IRepository<TModel, TKey> repository, string name)
@@ -177,7 +177,7 @@ namespace ComputerBuildService.BL.Services
 
         /// <summary>
         /// Проверяет существует ли properties, в случае если в базе нет данного объекта создает новый
-        /// и устанавливает необходимые связи
+        /// и установит необходимые связи
         /// </summary>
         private async Task MapPropertyRequest(HardwareItemEntity entity, IEnumerable<CompatibilityPropertyRequest> properties)
         {
@@ -204,6 +204,28 @@ namespace ComputerBuildService.BL.Services
             }
 
             entity.PropertysItems = propertysItems;
+        }
+
+        public async Task<ResultObject<HardwareItemResponse>> DeleteHardwareItem(int id)
+        {
+            var result = ResultObject<HardwareItemResponse>.Create();
+
+            var entity = await container.HardwareItemRepository.GetFullObject(id);
+
+            if (entity == null)
+                return result.AddError(new Exception($"The specified object could not be found: Id = {id}"));
+
+            try
+            {
+                await container.HardwareItemRepository.RemoveAsync(entity);
+                await container.SaveAsync();
+            }
+            catch (Exception ex)
+            {
+                return result.AddError(ex);
+            }
+
+            return result;
         }
     }
 }

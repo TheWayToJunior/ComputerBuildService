@@ -42,5 +42,13 @@ namespace ComputerBuildService.Server.Controllers
 
             return Ok(result);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<ResultObject<HardwareItemResponse>>> Delete(int id)
+        {
+            var result = await service.DeleteHardwareItem(id);
+
+            return Ok(result);
+        }
     }
 }

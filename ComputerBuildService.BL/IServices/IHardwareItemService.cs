@@ -18,5 +18,7 @@ namespace ComputerBuildService.BL.IServices
 
         Task<ResultObject<HardwareItemResponse>> UpdateHardwareItem(
             HardwareItemRequest request);
+
+        Task<ResultObject<HardwareItemResponse>> DeleteHardwareItem(int id);
     }
 }

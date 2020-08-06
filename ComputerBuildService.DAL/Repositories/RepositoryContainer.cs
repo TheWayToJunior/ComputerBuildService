@@ -15,17 +15,17 @@ namespace ComputerBuildService.DAL.Repositories
 
             HardwareItemRepository = new HardwareItemRepository(this.context);
             HardwareTypeRepository = new HardwareTypeRepository(this.context);
-            CompatibilityPropertyRepository = new CompatibilityPropertyRepository(this.context);
             ManufacturerRepository = new ManufacturerRepository(this.context);
+            CompatibilityPropertyRepository = new CompatibilityPropertyRepository(this.context);
         }
 
         public IHardwareItemRepository HardwareItemRepository { get; private set; }
 
         public IHardwareTypeRepository HardwareTypeRepository { get; private set; }
 
-        public ICompatibilityPropertyRepository CompatibilityPropertyRepository { get; private set; }
-
         public IManufacturerRepository ManufacturerRepository { get; private set; }
+
+        public ICompatibilityPropertyRepository CompatibilityPropertyRepository { get; private set; }
 
         public int Save()
         {

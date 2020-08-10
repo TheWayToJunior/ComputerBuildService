@@ -9,13 +9,12 @@ namespace ComputerBuildService.DAL.Entities
         [Key]
         public int Id { get; set; }
 
-        [StringLength(64)]
+        [StringLength(128)]
         public string Name { get; set; }
 
         [Column(TypeName = "Money")]
         public decimal Price { get; set; }
 
-        [StringLength(255)]
         public string Description { get; set; }
 
         public int ManufacturerId { get; set; }

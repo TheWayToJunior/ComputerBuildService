@@ -36,6 +36,12 @@ namespace ComputerBuildService.BL.Models
             return this;
         }
 
+        public ResultObject<T> AddErrors(IEnumerable<Exception> exceptions)
+        {
+            Errors.AddRange(exceptions);
+            return this;
+        }
+
         public ResultObject<T> SetValue(T responseObj)
         {
             Value = responseObj;

@@ -101,10 +101,10 @@ namespace ComputerBuildService.BL.Services
                 await MapPropertyRequest(mapEntity, request.PropertysItems);
 
                 var manufacturerEntity = await GetOrCreateEntity(container.ManufacturerRepository, request.Manufacturer);
-                mapEntity.ManufacturerId = manufacturerEntity.Id;
+                mapEntity.Manufacturer = manufacturerEntity;
 
                 var hardwareTypeEntity = await GetOrCreateEntity(container.HardwareTypeRepository, request.HardwareType);
-                mapEntity.HardwareTypeId = hardwareTypeEntity.Id;
+                mapEntity.HardwareType = hardwareTypeEntity;
 
                 entity = await container.HardwareItemRepository.AddAsync(mapEntity);
                 await container.SaveAsync();
@@ -143,10 +143,10 @@ namespace ComputerBuildService.BL.Services
                 await MapPropertyRequest(entity, request.PropertysItems);
 
                 var manufacturerEntity = await GetOrCreateEntity(container.ManufacturerRepository, request.Manufacturer);
-                entity.ManufacturerId = manufacturerEntity.Id;
+                entity.Manufacturer = manufacturerEntity;
 
                 var hardwareTypeEntity = await GetOrCreateEntity(container.HardwareTypeRepository, request.HardwareType);
-                entity.HardwareTypeId = hardwareTypeEntity.Id;
+                entity.HardwareType = hardwareTypeEntity;
 
                 await container.SaveAsync();
             }
@@ -170,7 +170,6 @@ namespace ComputerBuildService.BL.Services
                 return entity;
 
             entity = await repository.AddAsync(new TModel { Name = name });
-            await container.SaveAsync();
 
             return entity;
         }

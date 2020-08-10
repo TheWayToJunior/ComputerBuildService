@@ -8,10 +8,10 @@ namespace ComputerBuildService.DAL.Entities
         [Key]
         public int Id { get; set; }
 
-        [StringLength(32)]
+        [StringLength(128)]
         public string PropertyType { get; set; }
 
-        [StringLength(64)]
+        [StringLength(255)]
         public string PropertyName { get; set; }
 
         public ICollection<CompatibilityPropertyHardwareItem> PropertysItems { get; set; }

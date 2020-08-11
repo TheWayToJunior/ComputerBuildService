@@ -4,6 +4,7 @@ using ComputerBuildService.BL.Parser.CitilinkParsers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ComputerBuildService.Server.Controllers
@@ -21,7 +22,7 @@ namespace ComputerBuildService.Server.Controllers
         }
 
         [HttpPost("{type}")]
-        public async Task<ActionResult<ResultObject<HardwareItemResponse>>> Fill(string type, int start, int end)
+        public async Task<ActionResult<ResultObject<IEnumerable<HardwareItemResponse>>>> Fill(string type, int start, int end)
         {
             var result = await service.Fill(new CitilinkParserSettings(type, start, end), type);
 

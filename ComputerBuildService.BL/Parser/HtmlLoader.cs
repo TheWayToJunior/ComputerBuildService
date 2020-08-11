@@ -18,14 +18,7 @@ namespace ComputerBuildService.BL.Parser
         {
             this.Uri = uri;
 
-            //var proxy = new WebProxy("http://80.187.140.74:8080/", false); ///176.9.63.62:3128
-
-            //var httpClientHandler = new HttpClientHandler
-            //{
-            //    Proxy = proxy,
-            //};
-
-            httpClient = new HttpClient(/*httpClientHandler, true*/);
+            httpClient = new HttpClient();
         }
 
         public string Uri { get; set; }

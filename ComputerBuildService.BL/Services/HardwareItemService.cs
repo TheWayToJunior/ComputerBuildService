@@ -111,6 +111,9 @@ namespace ComputerBuildService.BL.Services
             }
             catch (Exception ex)
             {
+                if (entity != null)
+                    await container.HardwareItemRepository.RemoveAsync(entity);
+
                 return result.AddError(ex);
             }
 
@@ -188,7 +191,7 @@ namespace ComputerBuildService.BL.Services
 
                 if (propertyEntity == null)
                 {
-                    propertyEntity = await container.CompatibilityPropertyRepository.AddAsync(new CompatibilityPropertyEntity 
+                    propertyEntity = await container.CompatibilityPropertyRepository.AddAsync(new CompatibilityPropertyEntity
                     {
                         PropertyName = item.PropertyName,
                         PropertyType = item.PropertyType

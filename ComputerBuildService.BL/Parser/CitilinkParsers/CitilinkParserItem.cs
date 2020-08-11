@@ -2,6 +2,7 @@
 using ComputerBuildService.BL.Models.Requests;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace ComputerBuildService.BL.Parser.CitilinkParser
 {
@@ -11,12 +12,14 @@ namespace ComputerBuildService.BL.Parser.CitilinkParser
         {
             var item = new HardwareItemRequest();
 
-            item.Name = ParseAttribute(document, "div.product_details div.not_display span[itemprop=name]", "content");
-            item.Manufacturer = ParseAttribute(document, "div.product_details div.not_display span[itemprop=brand]", "content");
-            //item.Description = ParseAttribute(document, "div.product_details div.not_display span[itemprop=description]", "content");
-
             var price = ParseTextContent(document, "div.price ins.num");
             item.Price = decimal.Parse(price);
+
+            var name = ParseAttribute(document, "div.product_details div.not_display span[itemprop=name]", "content");
+            item.Name = Regex.Replace(name, @"[А-я]+\S+\s", string.Empty);
+
+            item.Manufacturer = ParseAttribute(document, "div.product_details div.not_display span[itemprop=brand]", "content");
+            item.Description = ParseAttribute(document, "div.product_details div.not_display span[itemprop=description]", "content");
 
             item.PropertysItems = ParseProperties(document);
 
@@ -39,16 +42,24 @@ namespace ComputerBuildService.BL.Parser.CitilinkParser
 
             var elements = document.QuerySelectorAll("table.product_features tbody tr").Where(e => e.ClassName == null);
 
+            var str = new (string replace, string replacement)[] 
+            { 
+                //("Максимальный объем памяти", "Максимальный объем оперативной памяти") 
+            };
+
             foreach (var tr in elements)
             {
+                var title = tr.QuerySelector("th span.property_name").TextContent;
+                var replaceTitle = str.SingleOrDefault(r => r.replace.ToLower() == title.ToLower());
+
                 result.Add(new CompatibilityPropertyRequest
                 {
-                    PropertyType = tr.QuerySelector("th span.property_name").TextContent,
+                    PropertyType = replaceTitle == default ? title : replaceTitle.replacement,
                     PropertyName = tr.QuerySelector("td").TextContent
                 });
             }
 
-            return result.Take(22).ToArray();
+            return result.ToArray();
         }
     }
 }

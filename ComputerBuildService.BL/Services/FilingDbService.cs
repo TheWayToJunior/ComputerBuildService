@@ -2,6 +2,7 @@
 using ComputerBuildService.BL.Models;
 using ComputerBuildService.BL.Parser;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ComputerBuildService.BL.Services
@@ -17,9 +18,11 @@ namespace ComputerBuildService.BL.Services
             this.parser = parser;
         }
 
-        public async Task<ResultObject<HardwareItemResponse>> Fill(IParserSettings settings, string parseItemType)
+        public async Task<ResultObject<IEnumerable<HardwareItemResponse>>> Fill(IParserSettings settings, string parseItemType)
         {
-            var result = ResultObject<HardwareItemResponse>.Create();
+            var result = ResultObject<IEnumerable<HardwareItemResponse>>.Create();
+
+            var list = new List<HardwareItemResponse>();
 
             try
             {
@@ -29,8 +32,11 @@ namespace ComputerBuildService.BL.Services
                 {
                     var serviceResult = await service.AddHardwareItem(item);
 
-                    if (!serviceResult.IsSuccess)
+                    if (serviceResult.IsSuccess)
+                        list.Add(serviceResult.Value);
+                    else
                         result.AddErrors(serviceResult.Errors);
+
                 }
             }
             catch (Exception ex)
@@ -38,7 +44,7 @@ namespace ComputerBuildService.BL.Services
                 result.AddError(ex);
             }
 
-            return result;
+            return result.SetValue(list);
         }
     }
 }

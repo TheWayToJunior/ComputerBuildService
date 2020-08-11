@@ -11,7 +11,6 @@ namespace ComputerBuildService.DAL.Entities
         [StringLength(128)]
         public string PropertyType { get; set; }
 
-        [StringLength(255)]
         public string PropertyName { get; set; }
 
         public ICollection<CompatibilityPropertyHardwareItem> PropertysItems { get; set; }

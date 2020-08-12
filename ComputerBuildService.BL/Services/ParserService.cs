@@ -5,7 +5,6 @@ using ComputerBuildService.BL.Parser.CitilinkParser;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -20,12 +19,52 @@ namespace ComputerBuildService.BL.Services
             this.logger = logger;
         }
 
-        public async Task<IEnumerable<HardwareItemRequest>> Parse(IParserSettings settings, string type)
+        public async Task<HardwareItemRequest> ParseItem(IParserSettings settings, string type)
         {
+            HardwareItemRequest item = null;
+
+            try
+            {
+                item = await ParseProductItem(settings.BaseUrl);
+                item.HardwareType = type;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"{ex.Message} at the {settings.BaseUrl}");
+            }
+
+            return item;
+        }
+
+        public async Task<IEnumerable<HardwareItemRequest>> ParseItems(IParserSettings settings, string type)
+        {
+            var items = new List<HardwareItemRequest>();
+
             var productsId = await ParseProductId(settings);
 
-            var items = (await ParseItem(productsId, settings.BaseUrl))
-                .Select(i => { i.HardwareType = type; return i; }).ToList();
+
+            foreach (var id in productsId)
+            {
+                await Task.Delay(10000); /// lazy way to avoid captcha 
+
+                try
+                {
+                    var item = await ParseProductItem($"{settings.BaseUrl}/{id}");
+                    item.HardwareType = type;
+
+                    items.Add(item);
+                }
+                catch (HttpRequestException ex)
+                {
+                    logger.LogError($"{ex.Message}: {items.Count}");
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError($"{ex.Message} at the {settings.BaseUrl}/{id}");
+                    continue;
+                }
+            }
 
             return items;
         }
@@ -48,42 +87,23 @@ namespace ComputerBuildService.BL.Services
             return productsId;
         }
 
-        private async Task<IEnumerable<HardwareItemRequest>> ParseItem(IEnumerable<string> productsId, string url)
+        private async Task<HardwareItemRequest> ParseProductItem(string uri)
         {
-            var productsItem = new List<HardwareItemRequest>();
+            var item = new HardwareItemRequest();
 
             var parser = new ParserWorker<HardwareItemRequest>(new CitilinkParserItem());
 
             parser.OnCompleted += (s, e) =>
             {
                 logger.LogInformation($"{e.Name} - successfully paired");
-                productsItem.Add(e);
+                item = e;
             };
 
-            foreach (var id in productsId)
-            {
-                parser.Uri = $"{url}/{id}";
+            parser.Uri = uri;
 
-                try
-                {
-                    await Task.Delay(10000); /// lazy way to avoid captcha 
-                    await parser.Start();
-                }
-                catch (HttpRequestException ex)
-                {
-                    logger.LogError($"{ex.Message}: {productsItem.Count}");
-                    parser.Abort();
-                    break;
-                }
-                catch (Exception ex)
-                {
-                    logger.LogError($"{ex.Message} at the {url}/{id}");
-                    parser.Abort();
-                    continue;
-                }
-            }
+            await parser.Start();
 
-            return productsItem;
+            return item;
         }
     }
 }

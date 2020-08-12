@@ -22,9 +22,18 @@ namespace ComputerBuildService.Server.Controllers
         }
 
         [HttpPost("{type}")]
-        public async Task<ActionResult<ResultObject<IEnumerable<HardwareItemResponse>>>> Fill(string type, int start, int end)
+        public async Task<ActionResult<ResultObject<IEnumerable<HardwareItemResponse>>>> FillHardwareItems(
+            string type, int start, int end)
         {
-            var result = await service.Fill(new CitilinkParserSettings(type, start, end), type);
+            var result = await service.FillHardwareItems(new CitilinkParserSettings(type, start, end), type);
+
+            return result;
+        }
+
+        [HttpPost("{type}/{id}")]
+        public async Task<ActionResult<ResultObject<HardwareItemResponse>>> FillHardwareItem(string type, string id)
+        {
+            var result = await service.FillHardwareItem(new CitilinkParserSettings($"{type}/{id}"), type);
 
             return result;
         }

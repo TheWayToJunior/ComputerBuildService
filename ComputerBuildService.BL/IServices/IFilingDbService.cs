@@ -7,6 +7,8 @@ namespace ComputerBuildService.BL.IServices
 {
     public interface IFilingDbService
     {
-        Task<ResultObject<IEnumerable<HardwareItemResponse>>> Fill(IParserSettings settings, string parseItemType);
+        Task<ResultObject<IEnumerable<HardwareItemResponse>>> FillHardwareItems(IParserSettings settings, string parseItemType);
+
+        Task<ResultObject<HardwareItemResponse>> FillHardwareItem(IParserSettings settings, string parseItemType);
     }
 }

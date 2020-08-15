@@ -67,7 +67,7 @@ namespace ComputerBuildService.Server
             services.AddScoped<IRepositoryContainer, RepositoryContainer>();
             services.AddScoped<IHardwareItemService, HardwareItemService>();
             services.AddScoped<IParserService, ParserService>();
-            services.AddScoped<IFilingDbService, FilingDbService>();
+            services.AddScoped<IFilingDbProvider, FilingDbProvider>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

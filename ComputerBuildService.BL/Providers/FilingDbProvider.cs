@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace ComputerBuildService.BL.Services
 {
-    public class FilingDbService : IFilingDbService
+    public class FilingDbProvider : IFilingDbProvider
     {
         private readonly IHardwareItemService service;
         private readonly IParserService parser;
 
-        public FilingDbService(IHardwareItemService service, IParserService parser)
+        public FilingDbProvider(IHardwareItemService service, IParserService parser)
         {
             this.service = service;
             this.parser = parser;

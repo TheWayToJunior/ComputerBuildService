@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ComputerBuildService.BL.IServices
 {
-    public interface IFilingDbService
+    public interface IFilingDbProvider
     {
         Task<ResultObject<IEnumerable<HardwareItemResponse>>> FillHardwareItems(IParserSettings settings, string parseItemType);
 

@@ -14,9 +14,9 @@ namespace ComputerBuildService.Server.Controllers
     //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     public class FillDatabaseController : ControllerBase
     {
-        private readonly IFilingDbService service;
+        private readonly IFilingDbProvider service;
 
-        public FillDatabaseController(IFilingDbService service)
+        public FillDatabaseController(IFilingDbProvider service)
         {
             this.service = service;
         }

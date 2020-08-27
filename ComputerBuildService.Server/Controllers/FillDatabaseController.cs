@@ -14,26 +14,26 @@ namespace ComputerBuildService.Server.Controllers
     //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     public class FillDatabaseController : ControllerBase
     {
-        private readonly IFilingDbProvider service;
+        private readonly IFilingDbProvider provider;
 
-        public FillDatabaseController(IFilingDbProvider service)
+        public FillDatabaseController(IFilingDbProvider provider)
         {
-            this.service = service;
+            this.provider = provider;
+        }
+
+        [HttpPost("{type}/{id}")]
+        public async Task<ActionResult<ResultObject<HardwareItemResponse>>> FillHardwareItem(string type, string id)
+        {
+            var result = await provider.FillHardwareItem(type, id);
+
+            return result;
         }
 
         [HttpPost("{type}")]
         public async Task<ActionResult<ResultObject<IEnumerable<HardwareItemResponse>>>> FillHardwareItems(
             string type, int start, int end)
         {
-            var result = await service.FillHardwareItems(new CitilinkParserSettings(type, start, end), type);
-
-            return result;
-        }
-
-        [HttpPost("{type}/{id}")]
-        public async Task<ActionResult<ResultObject<HardwareItemResponse>>> FillHardwareItem(string type, string id)
-        {
-            var result = await service.FillHardwareItem(new CitilinkParserSettings($"{type}/{id}"), type);
+            var result = await provider.FillHardwareItems(type, start, end);
 
             return result;
         }

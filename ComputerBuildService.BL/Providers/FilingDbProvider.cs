@@ -1,6 +1,6 @@
 ﻿using ComputerBuildService.BL.IServices;
 using ComputerBuildService.BL.Models;
-using ComputerBuildService.BL.Parser;
+using ComputerBuildService.BL.Parser.CitilinkParsers;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -18,7 +18,7 @@ namespace ComputerBuildService.BL.Services
             this.parser = parser;
         }
 
-        public async Task<ResultObject<HardwareItemResponse>> FillHardwareItem(IParserSettings settings, string parseItemType)
+        public async Task<ResultObject<HardwareItemResponse>> FillHardwareItem(string type, string id)
         {
             var result = ResultObject<HardwareItemResponse>.Create();
 
@@ -26,7 +26,7 @@ namespace ComputerBuildService.BL.Services
 
             try
             {
-                var item = await parser.ParseItem(settings, parseItemType);
+                var item = await parser.ParseItem(new CitilinkParserSettings($"{type}/{id}"), type);
 
                 var serviceResult = await service.AddHardwareItem(item);
 
@@ -43,7 +43,7 @@ namespace ComputerBuildService.BL.Services
             return result.SetValue(response);
         }
 
-        public async Task<ResultObject<IEnumerable<HardwareItemResponse>>> FillHardwareItems(IParserSettings settings, string parseItemType)
+        public async Task<ResultObject<IEnumerable<HardwareItemResponse>>> FillHardwareItems(string type, int start, int end)
         {
             var result = ResultObject<IEnumerable<HardwareItemResponse>>.Create();
 
@@ -51,7 +51,7 @@ namespace ComputerBuildService.BL.Services
 
             try
             {
-                var items = await parser.ParseItems(settings, parseItemType);
+                var items = await parser.ParseItems(new CitilinkParserSettings(type, start, end), type);
 
                 foreach (var item in items)
                 {

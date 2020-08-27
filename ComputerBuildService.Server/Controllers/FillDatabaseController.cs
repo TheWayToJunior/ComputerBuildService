@@ -1,4 +1,4 @@
-﻿using ComputerBuildService.BL.IServices;
+﻿using ComputerBuildService.BL.IProviders;
 using ComputerBuildService.BL.Models;
 using ComputerBuildService.BL.Parser.CitilinkParsers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

@@ -1,9 +1,8 @@
 ﻿using ComputerBuildService.BL.Models;
-using ComputerBuildService.BL.Parser;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ComputerBuildService.BL.IServices
+namespace ComputerBuildService.BL.IProviders
 {
     public interface IFilingDbProvider
     {

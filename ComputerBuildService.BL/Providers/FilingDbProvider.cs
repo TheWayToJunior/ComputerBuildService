@@ -1,11 +1,12 @@
-﻿using ComputerBuildService.BL.IServices;
+﻿using ComputerBuildService.BL.IProviders;
+using ComputerBuildService.BL.IServices;
 using ComputerBuildService.BL.Models;
 using ComputerBuildService.BL.Parser.CitilinkParsers;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ComputerBuildService.BL.Services
+namespace ComputerBuildService.BL.Providers
 {
     public class FilingDbProvider : IFilingDbProvider
     {

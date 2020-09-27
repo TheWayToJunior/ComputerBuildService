@@ -178,7 +178,7 @@ namespace ComputerBuildService.BL.Services
         }
 
         /// <summary>
-        /// Проверяет существует ли properties, в случае если в базе нет данного объекта создает новый
+        /// Проверяет существует ли properties, в случае если в базе нет данного объекта, создаст новый
         /// и установит необходимые связи
         /// </summary>
         private async Task MapPropertyRequest(HardwareItemEntity entity, IEnumerable<CompatibilityPropertyRequest> properties)
